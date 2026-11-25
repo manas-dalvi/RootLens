@@ -1,0 +1,105 @@
+{
+  "dataset": "HDFS_2k",
+  "timestamp_utc": "2026-11-17T18:04:14Z",
+  "random_seed": 42,
+  "parameters": {
+    "total_parameters": 823187,
+    "trainable_parameters": 823187
+  },
+  "training_sessions": 1541,
+  "training_anomalies": 0,
+  "validation_sessions": 227,
+  "validation_normal": 193,
+  "validation_anomalies": 34,
+  "center_norm": 11.209813117980957,
+  "total_runtime_seconds": 122.48,
+  "completed_epochs": 6,
+  "best_epoch": 2,
+  "best_val_loss": 2.02103,
+  "validation_metrics": {
+    "val_loss": 2.02103,
+    "threshold": 0.0388,
+    "val_f1": 0.2959,
+    "val_precision": 0.1852,
+    "val_recall": 0.7353,
+    "mean_normal_score": 0.173,
+    "mean_anomaly_score": 0.2593,
+    "total_val_evaluated": 227
+  },
+  "loss_history": [
+    {
+      "epoch": 1,
+      "duration_seconds": 22.72,
+      "train_total_loss": 3.01642,
+      "train_mlkp_loss": 2.38645,
+      "train_vhm_loss": 6.29969,
+      "val_loss": 2.44974,
+      "val_threshold": 0.048,
+      "val_f1": 0.2605,
+      "mean_normal_score": 0.2936,
+      "mean_anomaly_score": 0.3293
+    },
+    {
+      "epoch": 2,
+      "duration_seconds": 22.52,
+      "train_total_loss": 2.46468,
+      "train_mlkp_loss": 2.17825,
+      "train_vhm_loss": 2.8643,
+      "val_loss": 2.02103,
+      "val_threshold": 0.0388,
+      "val_f1": 0.2959,
+      "mean_normal_score": 0.173,
+      "mean_anomaly_score": 0.2593
+    },
+    {
+      "epoch": 3,
+      "duration_seconds": 22.51,
+      "train_total_loss": 2.45586,
+      "train_mlkp_loss": 2.20879,
+      "train_vhm_loss": 2.47075,
+      "val_loss": 2.19145,
+      "val_threshold": 0.5751,
+      "val_f1": 0.2951,
+      "mean_normal_score": 0.1632,
+      "mean_anomaly_score": 0.3197
+    },
+    {
+      "epoch": 4,
+      "duration_seconds": 23.06,
+      "train_total_loss": 2.32271,
+      "train_mlkp_loss": 2.10732,
+      "train_vhm_loss": 2.1539,
+      "val_loss": 2.23128,
+      "val_threshold": 0.0444,
+      "val_f1": 0.3226,
+      "mean_normal_score": 0.1302,
+      "mean_anomaly_score": 0.2055
+    },
+    {
+      "epoch": 5,
+      "duration_seconds": 17.56,
+      "train_total_loss": 2.38046,
+      "train_mlkp_loss": 2.21448,
+      "train_vhm_loss": 1.65975,
+      "val_loss": 2.07421,
+      "val_threshold": 0.0191,
+      "val_f1": 0.2857,
+      "mean_normal_score": 0.108,
+      "mean_anomaly_score": 0.1819
+    },
+    {
+      "epoch": 6,
+      "duration_seconds": 14.01,
+      "train_total_loss": 2.24163,
+      "train_mlkp_loss": 2.10133,
+      "train_vhm_loss": 1.40298,
+      "val_loss": 2.09008,
+      "val_threshold": 0.0211,
+      "val_f1": 0.2951,
+      "mean_normal_score": 0.0197,
+      "mean_anomaly_score": 0.1525
+    }
+  ],
+  "checkpoint_file": "logbert_best.pt",
+  "checkpoint_size_bytes": 9968920
+}

@@ -1,0 +1,77 @@
+{
+  "dataset_name": "HDFS",
+  "benchmark_variant": "HDFS_2k.log_structured.csv",
+  "created_at_utc": "2026-11-17T16:55:00.330624+00:00",
+  "random_seed": 42,
+  "split_ratios": {
+    "train": 0.8,
+    "val": 0.1,
+    "test": 0.1
+  },
+  "metrics": {
+    "train": {
+      "total_sessions": 1541,
+      "normal_sessions": 1541,
+      "anomaly_sessions": 0,
+      "anomaly_rate_percent": 0.0
+    },
+    "val": {
+      "total_sessions": 227,
+      "normal_sessions": 193,
+      "anomaly_sessions": 34,
+      "anomaly_rate_percent": 14.98
+    },
+    "test": {
+      "total_sessions": 226,
+      "normal_sessions": 192,
+      "anomaly_sessions": 34,
+      "anomaly_rate_percent": 15.04
+    },
+    "overall": {
+      "total_sessions": 1994,
+      "normal_sessions": 1926,
+      "anomaly_sessions": 68,
+      "anomaly_rate_percent": 3.41
+    }
+  },
+  "sequence_statistics": {
+    "min": 1,
+    "max": 2,
+    "mean": 1.0,
+    "median": 1,
+    "p95": 1,
+    "p99": 1,
+    "total_events": 2000
+  },
+  "vocabulary": {
+    "vocab_size": 19,
+    "special_tokens": {
+      "pad": 0,
+      "unk": 1,
+      "cls": 2,
+      "sep": 3,
+      "mask": 4
+    },
+    "template_counts": {
+      "E10": 311,
+      "E6": 314,
+      "E11": 292,
+      "E13": 292,
+      "E7": 115,
+      "E14": 20,
+      "E9": 263,
+      "E1": 80,
+      "E3": 80,
+      "E8": 224,
+      "E2": 1,
+      "E4": 5,
+      "E12": 2,
+      "E5": 1
+    }
+  },
+  "provenance": {
+    "source": "LogPAI loghub / loglizer (SOSP 2009 HDFS Benchmark)",
+    "license": "MIT License",
+    "citation": "Wei Xu et al. SOSP 2009; Jieming Zhu et al. ICSE 2019"
+  }
+}
