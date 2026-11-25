@@ -1,0 +1,2 @@
+{"timestamp": "2026-10-10T19:00:00Z", "level": "INFO", "service": "auth-service", "message": "User session token validated successfully", "host": "auth-worker-01"}
+{"timestamp": "2026-10-10T19:01:15Z", "level": "ERROR", "service": "payment-service", "message": "Payment gateway timeout after 30000ms", "host": "pay-node-02"}

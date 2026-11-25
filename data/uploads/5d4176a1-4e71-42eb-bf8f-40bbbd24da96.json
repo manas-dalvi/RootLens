@@ -1,0 +1,405 @@
+[
+  {
+    "timestamp": "2026-11-19T09:00:00Z",
+    "log_level": "INFO",
+    "service_name": "api-gateway",
+    "message": "Incoming POST /api/v1/orders request",
+    "host": "gateway-01",
+    "environment": "demo",
+    "trace_id": "tr-1001",
+    "span_id": "sp-001",
+    "attributes": {
+      "http_method": "POST",
+      "path": "/api/v1/orders",
+      "status_code": 202
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:00:17Z",
+    "log_level": "INFO",
+    "service_name": "order-service",
+    "message": "Order request accepted; order_id=ORD-9001",
+    "host": "order-01",
+    "environment": "demo",
+    "trace_id": "tr-1001",
+    "span_id": "sp-002",
+    "attributes": {
+      "order_id": "ORD-9001"
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:00:34Z",
+    "log_level": "INFO",
+    "service_name": "order-service",
+    "message": "Requesting payment authorization for order ORD-9001",
+    "host": "order-01",
+    "environment": "demo",
+    "trace_id": "tr-1001",
+    "span_id": "sp-003",
+    "attributes": {
+      "order_id": "ORD-9001"
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:00:51Z",
+    "log_level": "INFO",
+    "service_name": "payment-service",
+    "message": "Opening database connection",
+    "host": "payment-01",
+    "environment": "demo",
+    "trace_id": "tr-1001",
+    "span_id": "sp-004",
+    "attributes": {
+      "database": "payments"
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:01:08Z",
+    "log_level": "WARN",
+    "service_name": "postgres-db",
+    "message": "Connection pool utilization reached 85 percent",
+    "host": "postgres-01",
+    "environment": "demo",
+    "trace_id": "tr-1001",
+    "span_id": "sp-005",
+    "attributes": {
+      "pool_used": 17,
+      "pool_max": 20
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:01:25Z",
+    "log_level": "ERROR",
+    "service_name": "postgres-db",
+    "message": "Connection pool exhausted; unable to acquire connection",
+    "host": "postgres-01",
+    "environment": "demo",
+    "trace_id": "tr-1001",
+    "span_id": "sp-006",
+    "attributes": {
+      "pool_used": 20,
+      "pool_max": 20,
+      "error_code": "POOL_EXHAUSTED"
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:01:42Z",
+    "log_level": "ERROR",
+    "service_name": "payment-service",
+    "message": "Payment authorization failed: database connection acquisition timeout",
+    "host": "payment-01",
+    "environment": "demo",
+    "trace_id": "tr-1001",
+    "span_id": "sp-007",
+    "attributes": {
+      "order_id": "ORD-9001",
+      "timeout_ms": 30000
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:01:59Z",
+    "log_level": "ERROR",
+    "service_name": "order-service",
+    "message": "Order processing failed because payment authorization timed out",
+    "host": "order-01",
+    "environment": "demo",
+    "trace_id": "tr-1001",
+    "span_id": "sp-008",
+    "attributes": {
+      "order_id": "ORD-9001",
+      "dependency": "payment-service"
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:02:16Z",
+    "log_level": "ERROR",
+    "service_name": "api-gateway",
+    "message": "Upstream request timed out; returning HTTP 504",
+    "host": "gateway-01",
+    "environment": "demo",
+    "trace_id": "tr-1001",
+    "span_id": "sp-009",
+    "attributes": {
+      "status_code": 504,
+      "upstream": "order-service"
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:02:33Z",
+    "log_level": "WARN",
+    "service_name": "postgres-db",
+    "message": "Connection pool utilization remains at 100 percent",
+    "host": "postgres-01",
+    "environment": "demo",
+    "trace_id": "tr-1002",
+    "span_id": "sp-010",
+    "attributes": {
+      "pool_used": 20,
+      "pool_max": 20
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:02:50Z",
+    "log_level": "ERROR",
+    "service_name": "postgres-db",
+    "message": "Connection acquisition rejected: pool exhausted",
+    "host": "postgres-01",
+    "environment": "demo",
+    "trace_id": "tr-1002",
+    "span_id": "sp-011",
+    "attributes": {
+      "error_code": "POOL_EXHAUSTED"
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:03:07Z",
+    "log_level": "ERROR",
+    "service_name": "payment-service",
+    "message": "Payment capture request failed after 30000ms",
+    "host": "payment-02",
+    "environment": "demo",
+    "trace_id": "tr-1002",
+    "span_id": "sp-012",
+    "attributes": {
+      "timeout_ms": 30000
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:03:24Z",
+    "log_level": "ERROR",
+    "service_name": "api-gateway",
+    "message": "HTTP 504 while calling /api/v1/payments",
+    "host": "gateway-01",
+    "environment": "demo",
+    "trace_id": "tr-1002",
+    "span_id": "sp-013",
+    "attributes": {
+      "status_code": 504,
+      "path": "/api/v1/payments"
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:03:41Z",
+    "log_level": "WARN",
+    "service_name": "order-service",
+    "message": "Retry attempt 1 of 3 for payment authorization",
+    "host": "order-01",
+    "environment": "demo",
+    "trace_id": "tr-1003",
+    "span_id": "sp-014",
+    "attributes": {
+      "retry_attempt": 1
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:03:58Z",
+    "log_level": "WARN",
+    "service_name": "order-service",
+    "message": "Retry attempt 2 of 3 for payment authorization",
+    "host": "order-01",
+    "environment": "demo",
+    "trace_id": "tr-1003",
+    "span_id": "sp-015",
+    "attributes": {
+      "retry_attempt": 2
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:04:15Z",
+    "log_level": "ERROR",
+    "service_name": "postgres-db",
+    "message": "Database connection acquisition timeout after 5000ms",
+    "host": "postgres-01",
+    "environment": "demo",
+    "trace_id": "tr-1003",
+    "span_id": "sp-016",
+    "attributes": {
+      "timeout_ms": 5000
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:04:32Z",
+    "log_level": "ERROR",
+    "service_name": "payment-service",
+    "message": "Payment authorization unavailable due to database pool exhaustion",
+    "host": "payment-01",
+    "environment": "demo",
+    "trace_id": "tr-1003",
+    "span_id": "sp-017",
+    "attributes": {
+      "dependency": "postgres-db"
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:04:49Z",
+    "log_level": "ERROR",
+    "service_name": "api-gateway",
+    "message": "HTTP 504 returned for POST /api/v1/orders",
+    "host": "gateway-01",
+    "environment": "demo",
+    "trace_id": "tr-1003",
+    "span_id": "sp-018",
+    "attributes": {
+      "status_code": 504
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:05:06Z",
+    "log_level": "INFO",
+    "service_name": "inventory-service",
+    "message": "Inventory reservation completed for order ORD-9002",
+    "host": "inventory-01",
+    "environment": "demo",
+    "trace_id": "tr-1004",
+    "span_id": "sp-019",
+    "attributes": {
+      "order_id": "ORD-9002"
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:05:23Z",
+    "log_level": "INFO",
+    "service_name": "notification-service",
+    "message": "Order notification queued for ORD-9002",
+    "host": "notify-01",
+    "environment": "demo",
+    "trace_id": "tr-1004",
+    "span_id": "sp-020",
+    "attributes": {
+      "order_id": "ORD-9002"
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:05:40Z",
+    "log_level": "WARN",
+    "service_name": "postgres-db",
+    "message": "Connection pool utilization decreased to 90 percent",
+    "host": "postgres-01",
+    "environment": "demo",
+    "trace_id": "tr-1005",
+    "span_id": "sp-021",
+    "attributes": {
+      "pool_used": 18,
+      "pool_max": 20
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:05:57Z",
+    "log_level": "ERROR",
+    "service_name": "payment-service",
+    "message": "Database connection still unavailable for payment retry",
+    "host": "payment-02",
+    "environment": "demo",
+    "trace_id": "tr-1005",
+    "span_id": "sp-022",
+    "attributes": {
+      "retry_attempt": 3
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:06:14Z",
+    "log_level": "ERROR",
+    "service_name": "order-service",
+    "message": "Order ORD-9003 failed during payment stage",
+    "host": "order-02",
+    "environment": "demo",
+    "trace_id": "tr-1005",
+    "span_id": "sp-023",
+    "attributes": {
+      "order_id": "ORD-9003"
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:06:31Z",
+    "log_level": "ERROR",
+    "service_name": "api-gateway",
+    "message": "HTTP 504 returned for /api/v1/orders/ORD-9003",
+    "host": "gateway-02",
+    "environment": "demo",
+    "trace_id": "tr-1005",
+    "span_id": "sp-024",
+    "attributes": {
+      "status_code": 504
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:06:48Z",
+    "log_level": "INFO",
+    "service_name": "postgres-db",
+    "message": "Connection pool health check completed",
+    "host": "postgres-01",
+    "environment": "demo",
+    "trace_id": "tr-1006",
+    "span_id": "sp-025",
+    "attributes": {
+      "pool_used": 12,
+      "pool_max": 20
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:07:05Z",
+    "log_level": "INFO",
+    "service_name": "payment-service",
+    "message": "Database connection established successfully",
+    "host": "payment-01",
+    "environment": "demo",
+    "trace_id": "tr-1006",
+    "span_id": "sp-026",
+    "attributes": {
+      "database": "payments"
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:07:22Z",
+    "log_level": "INFO",
+    "service_name": "payment-service",
+    "message": "Payment authorization completed for order ORD-9004",
+    "host": "payment-01",
+    "environment": "demo",
+    "trace_id": "tr-1006",
+    "span_id": "sp-027",
+    "attributes": {
+      "order_id": "ORD-9004"
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:07:39Z",
+    "log_level": "INFO",
+    "service_name": "order-service",
+    "message": "Order ORD-9004 processing completed",
+    "host": "order-01",
+    "environment": "demo",
+    "trace_id": "tr-1006",
+    "span_id": "sp-028",
+    "attributes": {
+      "order_id": "ORD-9004"
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:07:56Z",
+    "log_level": "INFO",
+    "service_name": "api-gateway",
+    "message": "HTTP 200 returned for /api/v1/orders/ORD-9004",
+    "host": "gateway-01",
+    "environment": "demo",
+    "trace_id": "tr-1006",
+    "span_id": "sp-029",
+    "attributes": {
+      "status_code": 200
+    }
+  },
+  {
+    "timestamp": "2026-11-19T09:08:13Z",
+    "log_level": "INFO",
+    "service_name": "monitoring-agent",
+    "message": "Database pool recovery observed; utilization 60 percent",
+    "host": "monitor-01",
+    "environment": "demo",
+    "trace_id": "tr-1007",
+    "span_id": "sp-030",
+    "attributes": {
+      "pool_used": 12,
+      "pool_max": 20
+    }
+  }
+]

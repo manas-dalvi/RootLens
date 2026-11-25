@@ -1,0 +1,2 @@
+{"timestamp": "2026-10-10T19:30:00Z", "level": "WARN", "service": "cart-service", "message": "High cart abandon rate detected", "host": "cart-01"}
+{"timestamp": "2026-10-10T19:31:00Z", "level": "INFO", "service": "cart-service", "message": "Cart cleanup worker executed", "host": "cart-01"}

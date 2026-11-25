@@ -1,0 +1,236 @@
+[
+  {
+    "timestamp": "2026-10-14T08:00:00Z",
+    "service_name": "api-gateway",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "Gateway routing engine healthy; active downstream targets: 4",
+    "host": "gw-edge-01",
+    "endpoint": "/health",
+    "http_status": 200
+  },
+  {
+    "timestamp": "2026-10-14T08:00:05Z",
+    "service_name": "order-service",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "Order service listening on port 8080; connection pool initialized",
+    "host": "order-svc-prod-01"
+  },
+  {
+    "timestamp": "2026-10-14T08:00:10Z",
+    "service_name": "payment-service",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "Payment processing worker pool active; queue consumer running",
+    "host": "payment-svc-prod-01"
+  },
+  {
+    "timestamp": "2026-10-14T08:00:15Z",
+    "service_name": "postgres-db",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "database system is ready to accept connections; max_connections=100",
+    "host": "db-primary-01"
+  },
+  {
+    "timestamp": "2026-10-14T08:00:45Z",
+    "service_name": "order-service",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "Processing batch checkout requests; active_threads=12",
+    "host": "order-svc-prod-01",
+    "trace_id": "trace-db-001"
+  },
+  {
+    "timestamp": "2026-10-14T08:01:05Z",
+    "service_name": "postgres-db",
+    "environment": "production",
+    "log_level": "WARN",
+    "message": "connection pool approaching capacity: active=88 max=100 idle=2",
+    "host": "db-primary-01",
+    "pool_active": 88,
+    "pool_max": 100
+  },
+  {
+    "timestamp": "2026-10-14T08:01:20Z",
+    "service_name": "postgres-db",
+    "environment": "production",
+    "log_level": "WARN",
+    "message": "connection pool critical: active=98 max=100 wait_queue_depth=16",
+    "host": "db-primary-01",
+    "pool_active": 98,
+    "pool_max": 100
+  },
+  {
+    "timestamp": "2026-10-14T08:01:30Z",
+    "service_name": "postgres-db",
+    "environment": "production",
+    "log_level": "FATAL",
+    "message": "FATAL: remaining connection slots are reserved for non-replication superuser connections active=100 max=100",
+    "host": "db-primary-01",
+    "error_code": "53300",
+    "pool_active": 100,
+    "pool_max": 100
+  },
+  {
+    "timestamp": "2026-10-14T08:01:35Z",
+    "service_name": "order-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "ConnectionAcquisitionTimeoutException: HikariPool-1 - Connection is not available, request timed out after 5002ms",
+    "host": "order-svc-prod-01",
+    "trace_id": "trace-db-001",
+    "span_id": "span-ord-101",
+    "pool_name": "HikariPool-1",
+    "timeout_ms": 5002
+  },
+  {
+    "timestamp": "2026-10-14T08:01:40Z",
+    "service_name": "order-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "Failed to persist order entity order_id=ord-94819: database connection pool exhausted",
+    "host": "order-svc-prod-01",
+    "trace_id": "trace-db-001",
+    "span_id": "span-ord-102",
+    "order_id": "ord-94819"
+  },
+  {
+    "timestamp": "2026-10-14T08:01:45Z",
+    "service_name": "order-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "Cannot acquire JDBC Connection from pool; active=50 idle=0 waiting=42",
+    "host": "order-svc-prod-02",
+    "trace_id": "trace-db-002",
+    "span_id": "span-ord-201"
+  },
+  {
+    "timestamp": "2026-10-14T08:01:50Z",
+    "service_name": "payment-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "ReadTimeout: downstream order-service call failed after 3000ms url=/internal/orders/ord-94819/lock",
+    "host": "payment-svc-prod-01",
+    "trace_id": "trace-db-001",
+    "span_id": "span-pay-101",
+    "target_service": "order-service",
+    "timeout_ms": 3000
+  },
+  {
+    "timestamp": "2026-10-14T08:01:55Z",
+    "service_name": "payment-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "Payment capture aborted: order lock verification timeout order_id=ord-94819",
+    "host": "payment-svc-prod-01",
+    "trace_id": "trace-db-001",
+    "span_id": "span-pay-102",
+    "order_id": "ord-94819"
+  },
+  {
+    "timestamp": "2026-10-14T08:02:00Z",
+    "service_name": "api-gateway",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "POST /api/v1/checkout HTTP 504 Gateway Timeout duration_ms=5021 client_ip=192.168.1.55",
+    "host": "gw-edge-01",
+    "trace_id": "trace-db-001",
+    "span_id": "span-gw-101",
+    "endpoint": "/api/v1/checkout",
+    "http_status": 504,
+    "duration_ms": 5021
+  },
+  {
+    "timestamp": "2026-10-14T08:02:05Z",
+    "service_name": "order-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "Batch order processing aborted due to persistent database unavailability",
+    "host": "order-svc-prod-01",
+    "trace_id": "trace-db-002",
+    "span_id": "span-ord-202"
+  },
+  {
+    "timestamp": "2026-10-14T08:02:10Z",
+    "service_name": "payment-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "Payment capture failed: upstream order service returned 504 Gateway Timeout",
+    "host": "payment-svc-prod-02",
+    "trace_id": "trace-db-002",
+    "span_id": "span-pay-201"
+  },
+  {
+    "timestamp": "2026-10-14T08:02:15Z",
+    "service_name": "api-gateway",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "POST /api/v1/checkout HTTP 504 Gateway Timeout duration_ms=5015 client_ip=192.168.1.62",
+    "host": "gw-edge-02",
+    "trace_id": "trace-db-002",
+    "span_id": "span-gw-201",
+    "endpoint": "/api/v1/checkout",
+    "http_status": 504,
+    "duration_ms": 5015
+  },
+  {
+    "timestamp": "2026-10-14T08:02:20Z",
+    "service_name": "order-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "HikariPool-1 - Thread starvation detected: 48 worker threads blocked waiting for database connection",
+    "host": "order-svc-prod-02",
+    "trace_id": "trace-db-003",
+    "span_id": "span-ord-301",
+    "blocked_threads": 48
+  },
+  {
+    "timestamp": "2026-10-14T08:02:25Z",
+    "service_name": "payment-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "Circuit breaker tripped to OPEN for order-service: consecutive failure rate exceeded 50%",
+    "host": "payment-svc-prod-01",
+    "trace_id": "trace-db-003",
+    "span_id": "span-pay-301",
+    "circuit_state": "OPEN"
+  },
+  {
+    "timestamp": "2026-10-14T08:02:30Z",
+    "service_name": "api-gateway",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "POST /api/v1/checkout HTTP 503 Service Unavailable downstream circuit breaker open",
+    "host": "gw-edge-01",
+    "trace_id": "trace-db-003",
+    "span_id": "span-gw-301",
+    "endpoint": "/api/v1/checkout",
+    "http_status": 503
+  },
+  {
+    "timestamp": "2026-10-14T08:02:40Z",
+    "service_name": "postgres-db",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "canceling statement due to statement timeout query='SELECT * FROM customer_orders WHERE status = $1'",
+    "host": "db-primary-01"
+  },
+  {
+    "timestamp": "2026-10-14T08:02:50Z",
+    "service_name": "postgres-db",
+    "environment": "production",
+    "log_level": "WARN",
+    "message": "temporary file created size=148MB due to work_mem threshold during sort",
+    "host": "db-primary-01"
+  },
+  {
+    "timestamp": "2026-10-14T08:03:00Z",
+    "service_name": "order-service",
+    "environment": "production",
+    "log_level": "WARN",
+    "message": "Health check degraded: PostgreSQL connectivity probe returned unhealthy after 3 retries",
+    "host": "order-svc-prod-01"
+  }
+]

@@ -1,0 +1,104 @@
+[
+  {
+    "timestamp": "2026-10-14T11:00:10Z",
+    "service_name": "notification-service",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "Notification dispatch worker listening on internal email queue",
+    "host": "notif-worker-01"
+  },
+  {
+    "timestamp": "2026-10-14T11:05:22Z",
+    "service_name": "notification-service",
+    "environment": "production",
+    "log_level": "WARN",
+    "message": "SMTP connection slow: smtp.internal:587 initial handshake response time 4200ms",
+    "host": "notif-worker-01",
+    "trace_id": "trace-notif-991",
+    "target_port": 587,
+    "handshake_ms": 4200
+  },
+  {
+    "timestamp": "2026-10-14T11:05:35Z",
+    "service_name": "notification-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "SmtpConnectionTimeout: Failed to deliver email to recipient user_id=usr-8191; socket closed",
+    "host": "notif-worker-01",
+    "trace_id": "trace-notif-991",
+    "recipient_id": "usr-8191"
+  },
+  {
+    "timestamp": "2026-10-14T11:12:00Z",
+    "service_name": "inventory-service",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "Inventory sync cycle completed; scanned_records=1200 updated=14",
+    "host": "inv-sync-prod-02"
+  },
+  {
+    "timestamp": "2026-10-14T11:16:45Z",
+    "service_name": "inventory-service",
+    "environment": "production",
+    "log_level": "WARN",
+    "message": "Redis replica connection dropped on 10.0.4.12:6379; reconnecting via sentinel",
+    "host": "inv-sync-prod-02",
+    "trace_id": "trace-inv-404",
+    "redis_host": "10.0.4.12:6379"
+  },
+  {
+    "timestamp": "2026-10-14T11:17:02Z",
+    "service_name": "inventory-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "RedisSocketTimeout: Redis sentinel failover in progress; cache fetch failed for sku=SKU-9912",
+    "host": "inv-sync-prod-02",
+    "trace_id": "trace-inv-404",
+    "sku": "SKU-9912"
+  },
+  {
+    "timestamp": "2026-10-14T11:18:15Z",
+    "service_name": "inventory-service",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "Redis connection re-established to new master node 10.0.4.15:6379",
+    "host": "inv-sync-prod-02"
+  },
+  {
+    "timestamp": "2026-10-14T11:24:10Z",
+    "service_name": "analytics-worker",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "Parquet export compression cycle started; batch_id=b-7718",
+    "host": "analytics-batch-01"
+  },
+  {
+    "timestamp": "2026-10-14T11:29:55Z",
+    "service_name": "analytics-worker",
+    "environment": "production",
+    "log_level": "WARN",
+    "message": "Storage upload retry: HTTP 503 SlowDown received from s3.amazonaws.com",
+    "host": "analytics-batch-01",
+    "trace_id": "trace-worker-712",
+    "target_bucket": "prod-telemetry-archive",
+    "http_status": 503
+  },
+  {
+    "timestamp": "2026-10-14T11:30:18Z",
+    "service_name": "analytics-worker",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "S3BatchUploadFailed: Retry limit 3 reached for telemetry chunk telemetry-20261014-11.parquet",
+    "host": "analytics-batch-01",
+    "trace_id": "trace-worker-712",
+    "chunk_file": "telemetry-20261014-11.parquet"
+  },
+  {
+    "timestamp": "2026-10-14T11:35:00Z",
+    "service_name": "analytics-worker",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "Retrying telemetry batch upload with exponential backoff delay 30s",
+    "host": "analytics-batch-01"
+  }
+]

@@ -1,0 +1,10 @@
+081109 203518 143 INFO dfs.DataNode$DataXceiver: Receiving block blk_1001 src: /10.250.19.102:54106 dest: /10.250.19.102:50010
+081109 203518 35 INFO dfs.FSNamesystem: BLOCK* NameSystem.allocateBlock: /job.jar. blk_1001
+081109 203519 145 INFO dfs.DataNode$PacketResponder: PacketResponder 1 for block blk_1001 terminating
+081109 203520 143 INFO dfs.DataNode$DataXceiver: Receiving block blk_1002 src: /10.250.19.102:54106 dest: /10.250.19.102:50010
+081109 203521 35 INFO dfs.FSNamesystem: BLOCK* NameSystem.allocateBlock: /job2.jar. blk_1002
+081109 203522 145 INFO dfs.DataNode$PacketResponder: PacketResponder 2 for block blk_1002 terminating
+Malformed line without timestamp or component header
+999999 999999 143 INFO dfs.DataNode$DataXceiver: Receiving block blk_9999 src: /a dest: /b
+081109 203518 143 INFO dfs.DataNode$DataXceiver: Receiving block without identifier src: /a dest: /b
+081109 203518 143 INFO dfs.DataNode$DataXceiver: Unknown unsupported action on block blk_9999

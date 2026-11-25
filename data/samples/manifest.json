@@ -1,0 +1,156 @@
+{
+  "version": "1.0.0",
+  "created_at": "2026-10-14T00:00:00Z",
+  "description": "Ground-truth evaluation reference manifest for RootLens multi-service benchmark datasets.",
+  "evaluation_principles": {
+    "uncertainty_contract": "RootLens strictly enforces is_root_cause_confirmed=false across all deterministic and LLM-assisted pipelines. Correlation and temporal proximity formulate verifiable diagnostic hypotheses, but never prove definitive real-world causality without human SRE confirmation.",
+    "ground_truth_limitation": "Synthetic ground truth serves solely as an evaluation baseline to measure whether detection, correlation, and evidence extraction align with expected failure paths. It does not imply that algorithms should aggressively assert causality when telemetry is noisy, incomplete, or ambiguous."
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SCENARIO-A",
+      "name": "Database Connection Pool Cascade",
+      "file": "scenario_db_cascade.json",
+      "total_records": 23,
+      "services_involved": ["postgres-db", "order-service", "payment-service", "api-gateway"],
+      "time_range": {
+        "start": "2026-10-14T08:00:00Z",
+        "end": "2026-10-14T08:03:00Z",
+        "duration_seconds": 180
+      },
+      "ground_truth_trigger": {
+        "culprit_service": "postgres-db",
+        "event_timestamp": "2026-10-14T08:01:30Z",
+        "log_level": "FATAL",
+        "trigger_message": "FATAL: remaining connection slots are reserved for non-replication superuser connections active=100 max=100",
+        "failure_mechanism": "PostgreSQL connection pool hits maximum limit of 100 connections, exhausting connection slots and refusing incoming application client connections."
+      },
+      "expected_propagation_sequence": [
+        {
+          "step": 1,
+          "service": "postgres-db",
+          "timestamp": "2026-10-14T08:01:30Z",
+          "role": "PRIMARY_CULPRIT",
+          "effect": "Connection pool exhaustion (100/100 active connections)."
+        },
+        {
+          "step": 2,
+          "service": "order-service",
+          "timestamp": "2026-10-14T08:01:35Z",
+          "role": "DOWNSTREAM_CASCADE",
+          "effect": "HikariPool acquisition timeout after 5002ms; order persistence failures."
+        },
+        {
+          "step": 3,
+          "service": "payment-service",
+          "timestamp": "2026-10-14T08:01:50Z",
+          "role": "DOWNSTREAM_CASCADE",
+          "effect": "Read timeout waiting for order-service lock endpoint; circuit breaker trips to OPEN."
+        },
+        {
+          "step": 4,
+          "service": "api-gateway",
+          "timestamp": "2026-10-14T08:02:00Z",
+          "role": "DOWNSTREAM_CASCADE",
+          "effect": "HTTP 504 Gateway Timeout and HTTP 503 Service Unavailable returned to clients."
+        }
+      ],
+      "correlation_characteristics": {
+        "trace_linkage": "Distributed traces 'trace-db-001', 'trace-db-002', and 'trace-db-003' directly connect api-gateway -> order-service -> payment-service.",
+        "temporal_proximity": "Cascading failures occur within 30 seconds of the database pool exhaustion trigger.",
+        "expected_classification": "TRACE_LINKED"
+      },
+      "expected_certainty_outcome": {
+        "is_root_cause_confirmed": false,
+        "rationale": "Even with strong shared trace IDs and consistent chronological propagation from postgres-db, RootLens preserves is_root_cause_confirmed=false as an unconfirmed hypothesis until engineering confirmation."
+      }
+    },
+    {
+      "scenario_id": "SCENARIO-B",
+      "name": "Authentication Token Validation Surge",
+      "file": "scenario_auth_spike.json",
+      "total_records": 20,
+      "services_involved": ["auth-service", "payment-service", "api-gateway"],
+      "time_range": {
+        "start": "2026-10-14T09:14:30Z",
+        "end": "2026-10-14T09:17:30Z",
+        "duration_seconds": 180
+      },
+      "ground_truth_trigger": {
+        "culprit_service": "auth-service",
+        "event_timestamp": "2026-10-14T09:15:10Z",
+        "log_level": "ERROR",
+        "trigger_message": "Failed to refresh JWKS public keys: keystore connection reset by peer on ldap://vault.internal:8200",
+        "failure_mechanism": "Auth service fails to refresh signing keys from vault, causing public key cache invalidation and subsequent JWT signature verification rejections."
+      },
+      "expected_propagation_sequence": [
+        {
+          "step": 1,
+          "service": "auth-service",
+          "timestamp": "2026-10-14T09:15:10Z",
+          "role": "PRIMARY_CULPRIT",
+          "effect": "JWKS public key refresh failure; key cache invalidation for key_id=k-2026-oct."
+        },
+        {
+          "step": 2,
+          "service": "auth-service",
+          "timestamp": "2026-10-14T09:15:20Z",
+          "role": "PRIMARY_CULPRIT",
+          "effect": "InvalidTokenException raised during signature verification."
+        },
+        {
+          "step": 3,
+          "service": "payment-service",
+          "timestamp": "2026-10-14T09:15:25Z",
+          "role": "DOWNSTREAM_CASCADE",
+          "effect": "Customer payment requests rejected with 401 Unauthorized."
+        },
+        {
+          "step": 4,
+          "service": "api-gateway",
+          "timestamp": "2026-10-14T09:15:30Z",
+          "role": "DOWNSTREAM_CASCADE",
+          "effect": "Edge listener returns HTTP 401 Unauthorized; rejection rate surges above 35%."
+        }
+      ],
+      "correlation_characteristics": {
+        "trace_linkage": "Shared trace IDs 'trace-auth-101', 'trace-auth-102', and 'trace-auth-103' connect api-gateway -> payment-service -> auth-service.",
+        "temporal_proximity": "High-frequency burst of 401 errors within a 2-minute window following key cache invalidation.",
+        "expected_classification": "TRACE_LINKED"
+      },
+      "expected_certainty_outcome": {
+        "is_root_cause_confirmed": false,
+        "rationale": "High-confidence trace and temporal correlation correctly identifies auth-service as earliest observed failure, but strictly preserves is_root_cause_confirmed=false."
+      }
+    },
+    {
+      "scenario_id": "SCENARIO-C",
+      "name": "Intermittent Uncertain Telemetry",
+      "file": "scenario_intermittent_uncertain.json",
+      "total_records": 11,
+      "services_involved": ["notification-service", "inventory-service", "analytics-worker"],
+      "time_range": {
+        "start": "2026-10-14T11:00:10Z",
+        "end": "2026-10-14T11:35:00Z",
+        "duration_seconds": 2090
+      },
+      "ground_truth_trigger": {
+        "culprit_service": null,
+        "event_timestamp": null,
+        "log_level": null,
+        "trigger_message": null,
+        "failure_mechanism": "No common root cause. Disparate, independent transient failures (SMTP timeout, Redis socket failover, S3 503 SlowDown) occurring across isolated services without shared traces or causal dependency."
+      },
+      "expected_propagation_sequence": [],
+      "correlation_characteristics": {
+        "trace_linkage": "Zero shared trace IDs across services. Each service failure has isolated or missing trace telemetry.",
+        "temporal_proximity": "Events are sparse and spaced 10 to 15 minutes apart, exceeding standard cascade windows.",
+        "expected_classification": "INSUFFICIENT"
+      },
+      "expected_certainty_outcome": {
+        "is_root_cause_confirmed": false,
+        "rationale": "Crucial uncertainty validation test: RootLens MUST NOT synthesize a fictitious single root cause connecting notification-service, inventory-service, and analytics-worker. The system must report inconclusive correlation and explicit uncertainty."
+      }
+    }
+  ]
+}

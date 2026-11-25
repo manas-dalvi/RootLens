@@ -1,0 +1,197 @@
+[
+  {
+    "timestamp": "2026-10-14T09:14:30Z",
+    "service_name": "api-gateway",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "Edge routing layer active; incoming request rate=142 req/s",
+    "host": "gw-edge-01"
+  },
+  {
+    "timestamp": "2026-10-14T09:14:35Z",
+    "service_name": "auth-service",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "JWKS public key cache valid; active_keys=2 cache_ttl=120s",
+    "host": "auth-svc-prod-01"
+  },
+  {
+    "timestamp": "2026-10-14T09:14:40Z",
+    "service_name": "payment-service",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "Token validator initialized with auth-service JWKS endpoint",
+    "host": "pay-svc-prod-01"
+  },
+  {
+    "timestamp": "2026-10-14T09:15:00Z",
+    "service_name": "auth-service",
+    "environment": "production",
+    "log_level": "WARN",
+    "message": "JWKS cache TTL expired; initiating background public key refresh from keystore",
+    "host": "auth-svc-prod-01"
+  },
+  {
+    "timestamp": "2026-10-14T09:15:10Z",
+    "service_name": "auth-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "Failed to refresh JWKS public keys: keystore connection reset by peer on ldap://vault.internal:8200",
+    "host": "auth-svc-prod-01",
+    "error_type": "ConnectionResetError",
+    "target": "vault.internal:8200"
+  },
+  {
+    "timestamp": "2026-10-14T09:15:15Z",
+    "service_name": "auth-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "JWKS key cache invalidation error: public keys missing for key_id=k-2026-oct",
+    "host": "auth-svc-prod-01",
+    "key_id": "k-2026-oct"
+  },
+  {
+    "timestamp": "2026-10-14T09:15:20Z",
+    "service_name": "auth-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "InvalidTokenException: unable to verify JWT signature: unknown key_id k-2026-oct",
+    "host": "auth-svc-prod-02",
+    "trace_id": "trace-auth-101",
+    "span_id": "span-auth-01",
+    "key_id": "k-2026-oct"
+  },
+  {
+    "timestamp": "2026-10-14T09:15:25Z",
+    "service_name": "payment-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "Unauthorized: Bearer token rejected by auth validator error=invalid_signature key_id=k-2026-oct",
+    "host": "pay-svc-prod-01",
+    "trace_id": "trace-auth-101",
+    "span_id": "span-pay-01",
+    "http_status": 401
+  },
+  {
+    "timestamp": "2026-10-14T09:15:30Z",
+    "service_name": "api-gateway",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "POST /api/v1/payments/charge HTTP 401 Unauthorized invalid caller credentials duration_ms=45",
+    "host": "gw-edge-01",
+    "trace_id": "trace-auth-101",
+    "span_id": "span-gw-01",
+    "endpoint": "/api/v1/payments/charge",
+    "http_status": 401,
+    "duration_ms": 45
+  },
+  {
+    "timestamp": "2026-10-14T09:15:38Z",
+    "service_name": "auth-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "Token verification burst: 140 verification failures in 10s window due to unresolvable key_id",
+    "host": "auth-svc-prod-01",
+    "failure_count": 140,
+    "window_sec": 10
+  },
+  {
+    "timestamp": "2026-10-14T09:15:45Z",
+    "service_name": "auth-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "Failed to verify client token: SignatureVerificationError key_id=k-2026-oct",
+    "host": "auth-svc-prod-01",
+    "trace_id": "trace-auth-102",
+    "span_id": "span-auth-02",
+    "key_id": "k-2026-oct"
+  },
+  {
+    "timestamp": "2026-10-14T09:15:50Z",
+    "service_name": "payment-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "Unauthorized: token signature check failed with auth-service status=401",
+    "host": "pay-svc-prod-02",
+    "trace_id": "trace-auth-102",
+    "span_id": "span-pay-02",
+    "http_status": 401
+  },
+  {
+    "timestamp": "2026-10-14T09:15:55Z",
+    "service_name": "api-gateway",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "POST /api/v1/payments/charge HTTP 401 Unauthorized duration_ms=38",
+    "host": "gw-edge-02",
+    "trace_id": "trace-auth-102",
+    "span_id": "span-gw-02",
+    "endpoint": "/api/v1/payments/charge",
+    "http_status": 401,
+    "duration_ms": 38
+  },
+  {
+    "timestamp": "2026-10-14T09:16:05Z",
+    "service_name": "api-gateway",
+    "environment": "production",
+    "log_level": "WARN",
+    "message": "Authentication rejection rate surge: 401 rate exceeded 35% across edge listeners",
+    "host": "gw-edge-01",
+    "error_rate_pct": 35.4
+  },
+  {
+    "timestamp": "2026-10-14T09:16:15Z",
+    "service_name": "auth-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "Keystore retry backoff attempt 2 failed: vault.internal connection timed out after 3000ms",
+    "host": "auth-svc-prod-01",
+    "retry_attempt": 2
+  },
+  {
+    "timestamp": "2026-10-14T09:16:25Z",
+    "service_name": "payment-service",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "Rejecting customer payment request: missing validated claims in auth context",
+    "host": "pay-svc-prod-01",
+    "trace_id": "trace-auth-103",
+    "span_id": "span-pay-03"
+  },
+  {
+    "timestamp": "2026-10-14T09:16:30Z",
+    "service_name": "api-gateway",
+    "environment": "production",
+    "log_level": "ERROR",
+    "message": "POST /api/v1/account/settings HTTP 401 Unauthorized token expired or invalid",
+    "host": "gw-edge-01",
+    "trace_id": "trace-auth-103",
+    "span_id": "span-gw-03",
+    "endpoint": "/api/v1/account/settings",
+    "http_status": 401
+  },
+  {
+    "timestamp": "2026-10-14T09:16:50Z",
+    "service_name": "auth-service",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "Emergency JWKS fallback certificate loaded from local secondary cache",
+    "host": "auth-svc-prod-01"
+  },
+  {
+    "timestamp": "2026-10-14T09:17:10Z",
+    "service_name": "auth-service",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "Key verification recovered; accepting signatures with fallback key k-2026-oct",
+    "host": "auth-svc-prod-01"
+  },
+  {
+    "timestamp": "2026-10-14T09:17:30Z",
+    "service_name": "api-gateway",
+    "environment": "production",
+    "log_level": "INFO",
+    "message": "Rejection rate normalized below 0.5%; authentication services healthy",
+    "host": "gw-edge-01"
+  }
+]
