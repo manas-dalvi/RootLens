@@ -1,0 +1,623 @@
+{
+  "metadata": {
+    "benchmark_name": "RootLens RCA Ground Truth Benchmark",
+    "version": "1.0.0",
+    "dataset_type": "SYNTHETIC_EVALUATION_FIXTURE",
+    "created_at": "2026-11-18T19:00:00Z",
+    "disclaimer": "This benchmark is a synthetic evaluation fixture constructed specifically to evaluate root cause identification, evidence retrieval, claim grounding, and uncertainty abstention. Results on this benchmark are distinct from real-world benchmarks (such as HDFS LogBERT) and do not claim statistical generalization beyond the tested scenarios.",
+    "total_scenarios": 12
+  },
+  "scenarios": [
+    {
+      "scenario_id": "RCA-SCN-01",
+      "name": "Single Service Database Connection Pool Exhaustion",
+      "description": "PostgreSQL database connection pool hits hard maximum capacity, refusing subsequent client connections along an active distributed trace.",
+      "expected_classification": "TRACE_LINKED",
+      "expected_culprit_service": "postgres-db",
+      "expected_failure_mechanism": "connection_pool_exhaustion",
+      "expected_relevant_evidence_ids": ["log-s1-db-fatal", "log-s1-order-timeout"],
+      "expected_irrelevant_evidence_ids": ["log-s1-db-info"],
+      "alternative_hypotheses": [
+        "order-service internal connection leak",
+        "network switch packet loss between gateway and database"
+      ],
+      "expected_should_abstain": false,
+      "expected_is_root_cause_confirmed": false,
+      "input_logs": [
+        {
+          "log_id": "log-s1-db-info",
+          "timestamp": "2026-11-10T10:00:00Z",
+          "service_name": "postgres-db",
+          "log_level": "INFO",
+          "message": "database system is ready to accept connections; max_connections=100",
+          "trace_id": null,
+          "span_id": null,
+          "raw_log": "2026-11-10T10:00:00Z postgres-db INFO database system is ready to accept connections; max_connections=100",
+          "attributes": {}
+        },
+        {
+          "log_id": "log-s1-db-fatal",
+          "timestamp": "2026-11-10T10:01:30Z",
+          "service_name": "postgres-db",
+          "log_level": "FATAL",
+          "message": "FATAL: remaining connection slots are reserved for non-replication superuser connections active=100 max=100",
+          "trace_id": "trace-s1-pool-001",
+          "span_id": "span-s1-db-01",
+          "raw_log": "2026-11-10T10:01:30Z postgres-db FATAL FATAL: remaining connection slots are reserved for non-replication superuser connections active=100 max=100",
+          "attributes": {"error_type": "ConnectionPoolExhausted"}
+        },
+        {
+          "log_id": "log-s1-order-timeout",
+          "timestamp": "2026-11-10T10:01:35Z",
+          "service_name": "order-service",
+          "log_level": "ERROR",
+          "message": "HikariPool-1 Connection acquisition timed out after 5000ms from postgres-db:5432",
+          "trace_id": "trace-s1-pool-001",
+          "span_id": "span-s1-ord-02",
+          "raw_log": "2026-11-10T10:01:35Z order-service ERROR HikariPool-1 Connection acquisition timed out after 5000ms from postgres-db:5432",
+          "attributes": {"timeout_ms": 5000}
+        }
+      ]
+    },
+    {
+      "scenario_id": "RCA-SCN-02",
+      "name": "Auth Key Rotation Failure with Multiple Corroborating Logs",
+      "description": "Auth service fails to rotate JWKS keys from Vault, resulting in widespread JWT validation rejections across downstream payment and gateway services.",
+      "expected_classification": "TRACE_LINKED",
+      "expected_culprit_service": "auth-service",
+      "expected_failure_mechanism": "key_rotation_failure",
+      "expected_relevant_evidence_ids": [
+        "log-s2-auth-key-01",
+        "log-s2-auth-sig-02",
+        "log-s2-pay-401-03",
+        "log-s2-gw-401-04"
+      ],
+      "expected_irrelevant_evidence_ids": ["log-s2-auth-metrics"],
+      "alternative_hypotheses": [
+        "client side expired token flooding",
+        "edge gateway header stripping bug"
+      ],
+      "expected_should_abstain": false,
+      "expected_is_root_cause_confirmed": false,
+      "input_logs": [
+        {
+          "log_id": "log-s2-auth-metrics",
+          "timestamp": "2026-11-10T11:00:00Z",
+          "service_name": "auth-service",
+          "log_level": "INFO",
+          "message": "Prometheus metric exporter scraped 142 series in 4ms",
+          "trace_id": null,
+          "span_id": null,
+          "raw_log": "2026-11-10T11:00:00Z auth-service INFO Prometheus metric exporter scraped 142 series in 4ms",
+          "attributes": {}
+        },
+        {
+          "log_id": "log-s2-auth-key-01",
+          "timestamp": "2026-11-10T11:05:10Z",
+          "service_name": "auth-service",
+          "log_level": "ERROR",
+          "message": "Failed to refresh JWKS public keys: keystore connection reset by peer on vault.internal:8200",
+          "trace_id": "trace-s2-auth-99",
+          "span_id": "span-s2-auth-01",
+          "raw_log": "2026-11-10T11:05:10Z auth-service ERROR Failed to refresh JWKS public keys: keystore connection reset by peer on vault.internal:8200",
+          "attributes": {"vault_host": "vault.internal:8200"}
+        },
+        {
+          "log_id": "log-s2-auth-sig-02",
+          "timestamp": "2026-11-10T11:05:15Z",
+          "service_name": "auth-service",
+          "log_level": "ERROR",
+          "message": "InvalidTokenException: signature verification failed for key_id=k-2026-nov",
+          "trace_id": "trace-s2-auth-99",
+          "span_id": "span-s2-auth-02",
+          "raw_log": "2026-11-10T11:05:15Z auth-service ERROR InvalidTokenException: signature verification failed for key_id=k-2026-nov",
+          "attributes": {"key_id": "k-2026-nov"}
+        },
+        {
+          "log_id": "log-s2-pay-401-03",
+          "timestamp": "2026-11-10T11:05:20Z",
+          "service_name": "payment-service",
+          "log_level": "ERROR",
+          "message": "Payment processing aborted: 401 Unauthorized returned by auth validator",
+          "trace_id": "trace-s2-auth-99",
+          "span_id": "span-s2-pay-03",
+          "raw_log": "2026-11-10T11:05:20Z payment-service ERROR Payment processing aborted: 401 Unauthorized returned by auth validator",
+          "attributes": {"http_status": 401}
+        },
+        {
+          "log_id": "log-s2-gw-401-04",
+          "timestamp": "2026-11-10T11:05:25Z",
+          "service_name": "api-gateway",
+          "log_level": "ERROR",
+          "message": "HTTP 401 Unauthorized returned to client for /api/v1/checkout",
+          "trace_id": "trace-s2-auth-99",
+          "span_id": "span-s2-gw-04",
+          "raw_log": "2026-11-10T11:05:25Z api-gateway ERROR HTTP 401 Unauthorized returned to client for /api/v1/checkout",
+          "attributes": {"http_status": 401}
+        }
+      ]
+    },
+    {
+      "scenario_id": "RCA-SCN-03",
+      "name": "Multiple Competing Hypotheses with One True Root Cause",
+      "description": "Inventory service encounters Redis distributed lock deadlock on SKU, triggering cascading timeouts in order-service and notification-service.",
+      "expected_classification": "TRACE_LINKED",
+      "expected_culprit_service": "inventory-service",
+      "expected_failure_mechanism": "redis_lock_deadlock",
+      "expected_relevant_evidence_ids": [
+        "log-s3-inv-deadlock",
+        "log-s3-ord-timeout",
+        "log-s3-notif-timeout"
+      ],
+      "expected_irrelevant_evidence_ids": [],
+      "alternative_hypotheses": [
+        "order-service database row lock contention",
+        "notification-service Kafka partition rebalance"
+      ],
+      "expected_should_abstain": false,
+      "expected_is_root_cause_confirmed": false,
+      "input_logs": [
+        {
+          "log_id": "log-s3-inv-deadlock",
+          "timestamp": "2026-11-10T12:00:10Z",
+          "service_name": "inventory-service",
+          "log_level": "ERROR",
+          "message": "DeadlockAcquisitionException: failed to acquire distributed lock 'lock:sku:90210' after 3 retries",
+          "trace_id": "trace-s3-compete-1",
+          "span_id": "span-s3-inv-01",
+          "raw_log": "2026-11-10T12:00:10Z inventory-service ERROR DeadlockAcquisitionException: failed to acquire distributed lock 'lock:sku:90210' after 3 retries",
+          "attributes": {"resource": "lock:sku:90210"}
+        },
+        {
+          "log_id": "log-s3-ord-timeout",
+          "timestamp": "2026-11-10T12:00:18Z",
+          "service_name": "order-service",
+          "log_level": "ERROR",
+          "message": "InventoryReservationTimeout: RPC call to /inventory/reserve timed out after 8000ms",
+          "trace_id": "trace-s3-compete-1",
+          "span_id": "span-s3-ord-02",
+          "raw_log": "2026-11-10T12:00:18Z order-service ERROR InventoryReservationTimeout: RPC call to /inventory/reserve timed out after 8000ms",
+          "attributes": {"timeout_ms": 8000}
+        },
+        {
+          "log_id": "log-s3-notif-timeout",
+          "timestamp": "2026-11-10T12:00:25Z",
+          "service_name": "notification-service",
+          "log_level": "ERROR",
+          "message": "OrderConfirmedEvent dropped: upstream order confirmation cancelled due to downstream timeout",
+          "trace_id": "trace-s3-compete-1",
+          "span_id": "span-s3-notif-03",
+          "raw_log": "2026-11-10T12:00:25Z notification-service ERROR OrderConfirmedEvent dropped: upstream order confirmation cancelled due to downstream timeout",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "scenario_id": "RCA-SCN-04",
+      "name": "Unrelated Background Logs Present During Incident",
+      "description": "Billing service crashes with OutOfMemoryError while unrelated background cron and metric logging occur concurrently.",
+      "expected_classification": "TRACE_LINKED",
+      "expected_culprit_service": "billing-service",
+      "expected_failure_mechanism": "out_of_memory_crash",
+      "expected_relevant_evidence_ids": ["log-s4-bill-oom", "log-s4-bill-sigkill"],
+      "expected_irrelevant_evidence_ids": [
+        "log-s4-cron-warn",
+        "log-s4-metrics-info"
+      ],
+      "alternative_hypotheses": [
+        "cron-worker disk write buffer exhaustion",
+        "metrics-collector CPU throttling"
+      ],
+      "expected_should_abstain": false,
+      "expected_is_root_cause_confirmed": false,
+      "input_logs": [
+        {
+          "log_id": "log-s4-metrics-info",
+          "timestamp": "2026-11-10T13:00:00Z",
+          "service_name": "metrics-collector",
+          "log_level": "INFO",
+          "message": "Flushed 2500 metrics to remote storage in 12ms",
+          "trace_id": null,
+          "span_id": null,
+          "raw_log": "2026-11-10T13:00:00Z metrics-collector INFO Flushed 2500 metrics to remote storage in 12ms",
+          "attributes": {}
+        },
+        {
+          "log_id": "log-s4-cron-warn",
+          "timestamp": "2026-11-10T13:00:05Z",
+          "service_name": "cron-worker",
+          "log_level": "WARN",
+          "message": "Scheduled job 'daily_cleanup' took longer than average (45s > 30s threshold)",
+          "trace_id": "trace-s4-cron-unrelated",
+          "span_id": null,
+          "raw_log": "2026-11-10T13:00:05Z cron-worker WARN Scheduled job 'daily_cleanup' took longer than average (45s > 30s threshold)",
+          "attributes": {}
+        },
+        {
+          "log_id": "log-s4-bill-oom",
+          "timestamp": "2026-11-10T13:00:10Z",
+          "service_name": "billing-service",
+          "log_level": "FATAL",
+          "message": "java.lang.OutOfMemoryError: Java heap space exceeded at BillingEngine.processInvoices",
+          "trace_id": "trace-s4-bill-crash",
+          "span_id": "span-s4-bill-01",
+          "raw_log": "2026-11-10T13:00:10Z billing-service FATAL java.lang.OutOfMemoryError: Java heap space exceeded at BillingEngine.processInvoices",
+          "attributes": {"heap_max_mb": 4096}
+        },
+        {
+          "log_id": "log-s4-bill-sigkill",
+          "timestamp": "2026-11-10T13:00:12Z",
+          "service_name": "billing-service",
+          "log_level": "FATAL",
+          "message": "Container terminated with exit code 137 (OOMKilled by Linux kernel)",
+          "trace_id": "trace-s4-bill-crash",
+          "span_id": "span-s4-bill-02",
+          "raw_log": "2026-11-10T13:00:12Z billing-service FATAL Container terminated with exit code 137 (OOMKilled by Linux kernel)",
+          "attributes": {"exit_code": 137}
+        }
+      ]
+    },
+    {
+      "scenario_id": "RCA-SCN-05",
+      "name": "Missing Trace Context Across Services",
+      "description": "Ingress proxy and checkout service emit cascading errors 10 seconds apart, but intermediate reverse-proxy stripped W3C traceparent headers.",
+      "expected_classification": "TEMPORAL_ONLY",
+      "expected_culprit_service": "checkout-service",
+      "expected_failure_mechanism": "upstream_connect_refused",
+      "expected_relevant_evidence_ids": ["log-s5-chk-refuse", "log-s5-proxy-502"],
+      "expected_irrelevant_evidence_ids": [],
+      "alternative_hypotheses": [
+        "api-proxy TLS handshake timeout",
+        "independent DNS resolution failure"
+      ],
+      "expected_should_abstain": false,
+      "expected_is_root_cause_confirmed": false,
+      "input_logs": [
+        {
+          "log_id": "log-s5-chk-refuse",
+          "timestamp": "2026-11-10T14:00:00Z",
+          "service_name": "checkout-service",
+          "log_level": "ERROR",
+          "message": "ConnectionRefusedError: failed to connect to localhost:6379 (Redis daemon down)",
+          "trace_id": null,
+          "span_id": null,
+          "raw_log": "2026-11-10T14:00:00Z checkout-service ERROR ConnectionRefusedError: failed to connect to localhost:6379 (Redis daemon down)",
+          "attributes": {}
+        },
+        {
+          "log_id": "log-s5-proxy-502",
+          "timestamp": "2026-11-10T14:00:10Z",
+          "service_name": "api-proxy",
+          "log_level": "ERROR",
+          "message": "HTTP 502 Bad Gateway while connecting to upstream /checkout endpoint",
+          "trace_id": null,
+          "span_id": null,
+          "raw_log": "2026-11-10T14:00:10Z api-proxy ERROR HTTP 502 Bad Gateway while connecting to upstream /checkout endpoint",
+          "attributes": {"http_status": 502}
+        }
+      ]
+    },
+    {
+      "scenario_id": "RCA-SCN-06",
+      "name": "Missing or Incomplete Telemetry Identifiers",
+      "description": "Legacy system log emits an error without service name and without trace context, followed by worker crash.",
+      "expected_classification": "TEMPORAL_ONLY",
+      "expected_culprit_service": "unassigned",
+      "expected_failure_mechanism": "unassigned_kernel_panic",
+      "expected_relevant_evidence_ids": ["log-s6-legacy-fault", "log-s6-worker-crash"],
+      "expected_irrelevant_evidence_ids": [],
+      "alternative_hypotheses": [
+        "worker-service memory limit reached"
+      ],
+      "expected_should_abstain": false,
+      "expected_is_root_cause_confirmed": false,
+      "input_logs": [
+        {
+          "log_id": "log-s6-legacy-fault",
+          "timestamp": "2026-11-10T15:00:00Z",
+          "service_name": "",
+          "log_level": "CRITICAL",
+          "message": "Kernel panic: unable to handle kernel paging request at virtual address 0000000000000010",
+          "trace_id": null,
+          "span_id": null,
+          "raw_log": "2026-11-10T15:00:00Z CRITICAL Kernel panic: unable to handle kernel paging request at virtual address 0000000000000010",
+          "attributes": {}
+        },
+        {
+          "log_id": "log-s6-worker-crash",
+          "timestamp": "2026-11-10T15:00:12Z",
+          "service_name": "worker-service",
+          "log_level": "ERROR",
+          "message": "Worker node host unreachable: node heartbeat lost",
+          "trace_id": null,
+          "span_id": null,
+          "raw_log": "2026-11-10T15:00:12Z worker-service ERROR Worker node host unreachable: node heartbeat lost",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "scenario_id": "RCA-SCN-07",
+      "name": "Insufficient Evidence to Determine Root Cause",
+      "description": "Single isolated warning log occurs with no subsequent errors, no shared traces, and no corroborating events.",
+      "expected_classification": "INSUFFICIENT",
+      "expected_culprit_service": null,
+      "expected_failure_mechanism": null,
+      "expected_relevant_evidence_ids": [],
+      "expected_irrelevant_evidence_ids": ["log-s7-isolated"],
+      "alternative_hypotheses": [],
+      "expected_should_abstain": true,
+      "expected_is_root_cause_confirmed": false,
+      "input_logs": [
+        {
+          "log_id": "log-s7-isolated",
+          "timestamp": "2026-11-10T16:00:00Z",
+          "service_name": "notification-worker",
+          "log_level": "WARN",
+          "message": "Transient socket timeout while checking IMAP mailbox idle status",
+          "trace_id": null,
+          "span_id": null,
+          "raw_log": "2026-11-10T16:00:00Z notification-worker WARN Transient socket timeout while checking IMAP mailbox idle status",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "scenario_id": "RCA-SCN-08",
+      "name": "Fabricated or Non-Existent Evidence References",
+      "description": "An RCA claim references fabricated log identifiers ('log-fake-9999', 'log-ghost-8888') that do not exist in the incident evidence.",
+      "expected_classification": "TRACE_LINKED",
+      "expected_culprit_service": "auth-service",
+      "expected_failure_mechanism": "ldap_connection_refused",
+      "expected_relevant_evidence_ids": ["log-s8-real-auth"],
+      "expected_irrelevant_evidence_ids": [],
+      "alternative_hypotheses": [],
+      "expected_should_abstain": false,
+      "expected_is_root_cause_confirmed": false,
+      "test_claims": [
+        {
+          "claim_id": "claim-s8-fabricated",
+          "claim_text": "Failure occurred due to corrupted token cache on fake auth pod.",
+          "claim_type": "OBSERVED_FACT",
+          "citations": [
+            {
+              "log_id": "log-fake-9999",
+              "service_name": "auth-service",
+              "evidence_type": "CULPRIT_LOG",
+              "support_explanation": "Fake citation"
+            }
+          ]
+        }
+      ],
+      "input_logs": [
+        {
+          "log_id": "log-s8-real-auth",
+          "timestamp": "2026-11-10T17:00:00Z",
+          "service_name": "auth-service",
+          "log_level": "FATAL",
+          "message": "LDAPConnectionException: connection refused to ldap.internal:389",
+          "trace_id": "trace-s8-auth",
+          "span_id": "span-s8-auth-01",
+          "raw_log": "2026-11-10T17:00:00Z auth-service FATAL LDAPConnectionException: connection refused to ldap.internal:389",
+          "attributes": {}
+        },
+        {
+          "log_id": "log-s8-auth-downstream",
+          "timestamp": "2026-11-10T17:00:05Z",
+          "service_name": "auth-service",
+          "log_level": "ERROR",
+          "message": "User credentials authentication failed: LDAP pool unavailable",
+          "trace_id": "trace-s8-auth",
+          "span_id": "span-s8-auth-02",
+          "raw_log": "2026-11-10T17:00:05Z auth-service ERROR User credentials authentication failed: LDAP pool unavailable",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "scenario_id": "RCA-SCN-09",
+      "name": "Cross-Incident Evidence References",
+      "description": "An RCA claim references an evidence record that genuinely exists in OpenSearch but belongs to a completely different incident (incident-OTHER-999).",
+      "expected_classification": "TRACE_LINKED",
+      "expected_culprit_service": "payment-service",
+      "expected_failure_mechanism": "gateway_timeout",
+      "expected_relevant_evidence_ids": ["log-s9-pay-timeout"],
+      "expected_irrelevant_evidence_ids": [],
+      "alternative_hypotheses": [],
+      "expected_should_abstain": false,
+      "expected_is_root_cause_confirmed": false,
+      "test_claims": [
+        {
+          "claim_id": "claim-s9-cross-incident",
+          "claim_text": "Payment gateway timeout was triggered by database deadlock in another incident.",
+          "claim_type": "OBSERVED_FACT",
+          "citations": [
+            {
+              "log_id": "log-s9-foreign-evidence",
+              "service_name": "database-service",
+              "evidence_type": "CULPRIT_LOG",
+              "support_explanation": "Citation from foreign incident"
+            }
+          ]
+        }
+      ],
+      "input_logs": [
+        {
+          "log_id": "log-s9-pay-timeout",
+          "timestamp": "2026-11-10T18:00:00Z",
+          "service_name": "payment-service",
+          "log_level": "ERROR",
+          "message": "GatewayTimeout: upstream acquirer timed out after 10000ms",
+          "trace_id": "trace-s9-pay",
+          "span_id": "span-s9-pay-01",
+          "raw_log": "2026-11-10T18:00:00Z payment-service ERROR GatewayTimeout: upstream acquirer timed out after 10000ms",
+          "attributes": {}
+        },
+        {
+          "log_id": "log-s9-pay-retry",
+          "timestamp": "2026-11-10T18:00:03Z",
+          "service_name": "payment-service",
+          "log_level": "WARN",
+          "message": "Payment retry exhausted for txn_9021",
+          "trace_id": "trace-s9-pay",
+          "span_id": "span-s9-pay-02",
+          "raw_log": "2026-11-10T18:00:03Z payment-service WARN Payment retry exhausted for txn_9021",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "scenario_id": "RCA-SCN-10",
+      "name": "Evidence Associated with the Wrong Service",
+      "description": "An RCA claim cites a genuine log ID from the incident, but misrepresents the emitting service (citing auth-service instead of redis-cache).",
+      "expected_classification": "TRACE_LINKED",
+      "expected_culprit_service": "redis-cache",
+      "expected_failure_mechanism": "memory_limit_oom",
+      "expected_relevant_evidence_ids": ["log-s10-redis-oom"],
+      "expected_irrelevant_evidence_ids": [],
+      "alternative_hypotheses": [],
+      "expected_should_abstain": false,
+      "expected_is_root_cause_confirmed": false,
+      "test_claims": [
+        {
+          "claim_id": "claim-s10-wrong-svc",
+          "claim_text": "Authentication key cache hit maximum memory.",
+          "claim_type": "OBSERVED_FACT",
+          "citations": [
+            {
+              "log_id": "log-s10-redis-oom",
+              "service_name": "auth-service",
+              "evidence_type": "CULPRIT_LOG",
+              "support_explanation": "Mismatched service claim"
+            }
+          ]
+        }
+      ],
+      "input_logs": [
+        {
+          "log_id": "log-s10-redis-oom",
+          "timestamp": "2026-11-10T19:00:00Z",
+          "service_name": "redis-cache",
+          "log_level": "FATAL",
+          "message": "OOM command not allowed when used memory > 'maxmemory' (limit=16gb)",
+          "trace_id": "trace-s10-cache",
+          "span_id": "span-s10-01",
+          "raw_log": "2026-11-10T19:00:00Z redis-cache FATAL OOM command not allowed when used memory > 'maxmemory' (limit=16gb)",
+          "attributes": {}
+        },
+        {
+          "log_id": "log-s10-redis-evict",
+          "timestamp": "2026-11-10T19:00:04Z",
+          "service_name": "redis-cache",
+          "log_level": "ERROR",
+          "message": "Eviction policy volatile-lru failed to free required memory",
+          "trace_id": "trace-s10-cache",
+          "span_id": "span-s10-02",
+          "raw_log": "2026-11-10T19:00:04Z redis-cache ERROR Eviction policy volatile-lru failed to free required memory",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "scenario_id": "RCA-SCN-11",
+      "name": "Multiple Concurrent Failures with Disjoint Traces",
+      "description": "Two distinct failure cascades happen simultaneously on disjoint trace IDs. System must isolate them into separate incident candidates rather than merging.",
+      "expected_classification": "TRACE_LINKED",
+      "expected_culprit_service": "search-indexer",
+      "expected_failure_mechanism": "disk_full",
+      "expected_relevant_evidence_ids": ["log-s11-srch-disk", "log-s11-srch-retry"],
+      "expected_irrelevant_evidence_ids": ["log-s11-mail-socket", "log-s11-mail-retry"],
+      "alternative_hypotheses": [
+        "email-service SMTP timeout causing search failure"
+      ],
+      "expected_should_abstain": false,
+      "expected_is_root_cause_confirmed": false,
+      "input_logs": [
+        {
+          "log_id": "log-s11-srch-disk",
+          "timestamp": "2026-11-10T20:00:00Z",
+          "service_name": "search-indexer",
+          "log_level": "FATAL",
+          "message": "IOException: No space left on device (/var/data/opensearch)",
+          "trace_id": "trace-s11-search-only",
+          "span_id": "span-s11-srch-01",
+          "raw_log": "2026-11-10T20:00:00Z search-indexer FATAL IOException: No space left on device (/var/data/opensearch)",
+          "attributes": {}
+        },
+        {
+          "log_id": "log-s11-srch-retry",
+          "timestamp": "2026-11-10T20:00:05Z",
+          "service_name": "search-indexer",
+          "log_level": "ERROR",
+          "message": "IndexShardWriteException: failed to write shard log due to disk full error",
+          "trace_id": "trace-s11-search-only",
+          "span_id": "span-s11-srch-02",
+          "raw_log": "2026-11-10T20:00:05Z search-indexer ERROR IndexShardWriteException: failed to write shard log due to disk full error",
+          "attributes": {}
+        },
+        {
+          "log_id": "log-s11-mail-socket",
+          "timestamp": "2026-11-10T20:00:02Z",
+          "service_name": "email-service",
+          "log_level": "FATAL",
+          "message": "SocketTimeout: SMTP relay smtp.sendgrid.net unreachable",
+          "trace_id": "trace-s11-mail-only",
+          "span_id": "span-s11-mail-01",
+          "raw_log": "2026-11-10T20:00:02Z email-service FATAL SocketTimeout: SMTP relay smtp.sendgrid.net unreachable",
+          "attributes": {}
+        },
+        {
+          "log_id": "log-s11-mail-retry",
+          "timestamp": "2026-11-10T20:00:06Z",
+          "service_name": "email-service",
+          "log_level": "ERROR",
+          "message": "NotificationDeliveryException: retry limit exceeded for email dispatcher",
+          "trace_id": "trace-s11-mail-only",
+          "span_id": "span-s11-mail-02",
+          "raw_log": "2026-11-10T20:00:06Z email-service ERROR NotificationDeliveryException: retry limit exceeded for email dispatcher",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "scenario_id": "RCA-SCN-12",
+      "name": "Temporal Proximity Without Causal Proof",
+      "description": "Two unrelated services throw errors 3 seconds apart during routine restarts without distributed trace linkage. System must refuse to confirm causality.",
+      "expected_classification": "TEMPORAL_ONLY",
+      "expected_culprit_service": "recommender-engine",
+      "expected_failure_mechanism": "model_warmup_lag",
+      "expected_relevant_evidence_ids": ["log-s12-rec-lag", "log-s12-billing-warn"],
+      "expected_irrelevant_evidence_ids": [],
+      "alternative_hypotheses": [
+        "billing-audit service failure caused recommendation lag",
+        "system-wide resource contention"
+      ],
+      "expected_should_abstain": false,
+      "expected_is_root_cause_confirmed": false,
+      "input_logs": [
+        {
+          "log_id": "log-s12-rec-lag",
+          "timestamp": "2026-11-10T21:00:00Z",
+          "service_name": "recommender-engine",
+          "log_level": "ERROR",
+          "message": "ModelWarmupTimeout: cold start initialization exceeded 15000ms threshold",
+          "trace_id": null,
+          "span_id": null,
+          "raw_log": "2026-11-10T21:00:00Z recommender-engine ERROR ModelWarmupTimeout: cold start initialization exceeded 15000ms threshold",
+          "attributes": {}
+        },
+        {
+          "log_id": "log-s12-billing-warn",
+          "timestamp": "2026-11-10T21:00:03Z",
+          "service_name": "billing-audit",
+          "log_level": "ERROR",
+          "message": "LicenseCheckFailed: vendor license server handshake timed out",
+          "trace_id": null,
+          "span_id": null,
+          "raw_log": "2026-11-10T21:00:03Z billing-audit ERROR LicenseCheckFailed: vendor license server handshake timed out",
+          "attributes": {}
+        }
+      ]
+    }
+  ]
+}
