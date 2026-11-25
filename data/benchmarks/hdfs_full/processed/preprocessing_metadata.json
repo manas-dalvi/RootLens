@@ -1,0 +1,149 @@
+{
+  "dataset_name": "HDFS_Full_v1",
+  "provenance": {
+    "source": "LogPAI loghub / Zenodo DOI 10.5281/zenodo.8196385",
+    "citation": "Wei Xu et al. SOSP 2009; Jieming Zhu et al. ISSRE 2023",
+    "archive_checksum_md5": "76a24b4d9a6164d543fb275f89773260",
+    "dataset_license": "Creative Commons Attribution 4.0 International (CC-BY 4.0)",
+    "tooling_license": "MIT License (LogPAI loglizer/logparser)"
+  },
+  "created_at_utc": "2026-11-17T20:47:39.271032+00:00",
+  "random_seed": 42,
+  "preprocessing_runtime_seconds": 26.04,
+  "split_ratios": {
+    "train": 0.8,
+    "val": 0.1,
+    "test": 0.1
+  },
+  "metrics": {
+    "train": {
+      "total_sessions": 446578,
+      "normal_sessions": 446578,
+      "anomaly_sessions": 0,
+      "anomaly_rate_percent": 0.0
+    },
+    "val": {
+      "total_sessions": 64241,
+      "normal_sessions": 55822,
+      "anomaly_sessions": 8419,
+      "anomaly_rate_percent": 13.11
+    },
+    "test": {
+      "total_sessions": 64242,
+      "normal_sessions": 55823,
+      "anomaly_sessions": 8419,
+      "anomaly_rate_percent": 13.11
+    },
+    "overall": {
+      "total_sessions": 575061,
+      "normal_sessions": 558223,
+      "anomaly_sessions": 16838,
+      "anomaly_rate_percent": 2.93
+    }
+  },
+  "sequence_statistics": {
+    "total_sessions": 575061,
+    "total_events": 11175629,
+    "min": 2,
+    "max": 298,
+    "mean": 19.43,
+    "median": 19,
+    "p25": 19,
+    "p50": 19,
+    "p75": 20,
+    "p90": 25,
+    "p95": 28,
+    "p99": 33,
+    "bins": {
+      "length_1": 0,
+      "length_1_pct": 0.0,
+      "length_2_to_5": 6181,
+      "length_2_to_5_pct": 1.07,
+      "length_6_to_10": 10,
+      "length_6_to_10_pct": 0.0,
+      "length_11_to_20": 427700,
+      "length_11_to_20_pct": 74.37,
+      "length_gt_20": 141170,
+      "length_gt_20_pct": 24.55
+    }
+  },
+  "vocabulary": {
+    "policy": "Fitted strictly on normal training split",
+    "vocab_size": 22,
+    "training_event_templates_count": 17,
+    "training_event_templates": [
+      "E11",
+      "E16",
+      "E18",
+      "E2",
+      "E20",
+      "E21",
+      "E22",
+      "E23",
+      "E25",
+      "E26",
+      "E27",
+      "E28",
+      "E3",
+      "E4",
+      "E5",
+      "E6",
+      "E9"
+    ],
+    "canonical_event_templates_count": 29,
+    "oov_analysis": {
+      "validation_oov_tokens": 2741,
+      "validation_total_tokens": 1232302,
+      "validation_oov_rate_pct": 0.2224,
+      "validation_oov_distinct_templates": [
+        "E1",
+        "E10",
+        "E12",
+        "E13",
+        "E14",
+        "E15",
+        "E17",
+        "E19",
+        "E29",
+        "E7",
+        "E8"
+      ],
+      "test_oov_tokens": 2625,
+      "test_total_tokens": 1233324,
+      "test_oov_rate_pct": 0.2128,
+      "test_oov_distinct_templates": [
+        "E1",
+        "E10",
+        "E12",
+        "E13",
+        "E14",
+        "E15",
+        "E17",
+        "E19",
+        "E24",
+        "E29",
+        "E7",
+        "E8"
+      ]
+    }
+  },
+  "artifacts": {
+    "full_splits": {
+      "train_file": "train_sessions.json",
+      "val_file": "val_sessions.json",
+      "test_file": "test_sessions.json"
+    },
+    "curated_sampled_splits": {
+      "train_sampled_file": "train_sessions_sampled.json",
+      "train_sampled_count": 4855,
+      "val_sampled_file": "val_sessions_sampled.json",
+      "val_sampled_count": 2000,
+      "test_sampled_file": "test_sessions_sampled.json",
+      "test_sampled_count": 2000
+    },
+    "vocabularies": {
+      "training_vocab_file": "vocab.json",
+      "canonical_vocab_file": "vocab_canonical.json"
+    }
+  }
+}
