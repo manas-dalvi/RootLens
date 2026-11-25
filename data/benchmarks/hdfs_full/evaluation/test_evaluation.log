@@ -1,0 +1,43 @@
+2026-11-18 12:35:21,116 [INFO] evaluate_full_test_set: ======================================================================
+2026-11-18 12:35:21,116 [INFO] evaluate_full_test_set: ROOTLENS: PHASE 7 FINAL HELD-OUT TEST EVALUATION & BENCHMARK REPORTING
+2026-11-18 12:35:21,116 [INFO] evaluate_full_test_set: ======================================================================
+2026-11-18 12:35:21,116 [INFO] evaluate_full_test_set: Process ID: 2480 | Log file: data\benchmarks\hdfs_full\evaluation\test_evaluation.log
+2026-11-18 12:35:21,116 [INFO] evaluate_full_test_set: Checkpoint: data\benchmarks\hdfs_full\model\logbert_best.pt
+2026-11-18 12:35:21,116 [INFO] evaluate_full_test_set: Vocabulary: data\benchmarks\hdfs_full\processed\vocab.json
+2026-11-18 12:35:21,146 [INFO] evaluate_full_test_set: Test Partition: data\benchmarks\hdfs_full\processed\test_sessions.json
+2026-11-18 12:35:21,146 [INFO] evaluate_full_test_set: Fixed Validation-Calibrated Threshold: 0.0004
+2026-11-18 12:35:21,146 [INFO] evaluate_full_test_set: Hardware: 12 CPU cores, 8 PyTorch threads
+2026-11-18 12:35:21,146 [INFO] evaluate_full_test_set: Initializing LogBERTInferenceEngine from checkpoint...
+2026-11-18 12:35:21,178 [INFO] evaluate_full_test_set: Inference engine ready in 0.0320s (Center norm: 11.2898, Parameters: 823,958)
+2026-11-18 12:35:21,178 [INFO] evaluate_full_test_set: Loading held-out test partition from data\benchmarks\hdfs_full\processed\test_sessions.json...
+2026-11-18 12:35:21,664 [INFO] evaluate_full_test_set: Loaded 64,242 test sessions in 0.48s
+2026-11-18 12:35:21,665 [INFO] evaluate_full_test_set:   Normal sessions:   55,823 (86.89%)
+2026-11-18 12:35:21,665 [INFO] evaluate_full_test_set:   Anomaly sessions:  8,419 (13.11%)
+2026-11-18 12:35:21,665 [INFO] evaluate_full_test_set: Benchmarking single-sequence CPU inference latency over 1000 samples...
+2026-11-18 12:35:32,824 [INFO] evaluate_full_test_set: Single-Sequence CPU Latency Benchmark:
+2026-11-18 12:35:32,825 [INFO] evaluate_full_test_set:   Mean: 11.001 ms | p50: 10.896 ms | p90: 13.163 ms | p95: 15.026 ms | p99: 34.193 ms
+2026-11-18 12:35:32,825 [INFO] evaluate_full_test_set:   Min:  2.438 ms | Max: 103.890 ms | Throughput: 90.9 seq/s
+2026-11-18 12:35:32,825 [INFO] evaluate_full_test_set: Executing full-scale batched test scoring on all 64,242 sessions (Batch size 128)...
+2026-11-18 12:38:12,389 [INFO] evaluate_full_test_set: Full test scoring completed in 159.56s (Throughput: 402.6 seq/s)
+2026-11-18 12:38:12,390 [INFO] evaluate_full_test_set: Computing metrics with fixed threshold 0.0004...
+2026-11-18 12:38:12,429 [INFO] evaluate_full_test_set: ----------------------------------------------------------------------
+2026-11-18 12:38:12,430 [INFO] evaluate_full_test_set: FINAL TEST RESULTS (Threshold = 0.0004):
+2026-11-18 12:38:12,430 [INFO] evaluate_full_test_set:   F1-Score:    0.6802 (68.02%)
+2026-11-18 12:38:12,430 [INFO] evaluate_full_test_set:   Precision:   0.9745 (97.45%)
+2026-11-18 12:38:12,431 [INFO] evaluate_full_test_set:   Recall:      0.5224 (52.24%)
+2026-11-18 12:38:12,431 [INFO] evaluate_full_test_set:   FPR:         0.0021 (0.21%)
+2026-11-18 12:38:12,431 [INFO] evaluate_full_test_set:   Specificity: 0.9979 (99.79%)
+2026-11-18 12:38:12,431 [INFO] evaluate_full_test_set:   Accuracy:    0.9356 (93.56%)
+2026-11-18 12:38:12,431 [INFO] evaluate_full_test_set: CONFUSION MATRIX:
+2026-11-18 12:38:12,432 [INFO] evaluate_full_test_set:   TP: 4398 | FP: 115 | TN: 55708 | FN: 4021
+2026-11-18 12:38:12,432 [INFO] evaluate_full_test_set: SCORE SEPARATION:
+2026-11-18 12:38:12,432 [INFO] evaluate_full_test_set:   Normal sessions:  Mean = 0.0003 | Median = 0.0003 | Min = 0.0003 | Max = 0.2360
+2026-11-18 12:38:12,432 [INFO] evaluate_full_test_set:   Anomaly sessions: Mean = 0.0794 | Median = 0.0253 | Min = 0.0003 | Max = 0.6202
+2026-11-18 12:38:12,432 [INFO] evaluate_full_test_set: ----------------------------------------------------------------------
+2026-11-18 12:38:12,432 [INFO] evaluate_full_test_set: Verifying production inference engine on test split sample sequences...
+2026-11-18 12:38:12,462 [INFO] evaluate_full_test_set: Production Verification - Normal [blk_410678498721295872]: is_anomaly=False, score=0.0003, vhm=0.0027, mismatches=0/19
+2026-11-18 12:38:12,462 [INFO] evaluate_full_test_set: Production Verification - Anomaly [blk_6492489344990292445]: is_anomaly=True, score=0.1288, vhm=0.0056, mismatches=5/39
+2026-11-18 12:38:12,464 [INFO] evaluate_full_test_set: Saved final test evaluation report to data\benchmarks\hdfs_full\evaluation\final_test_evaluation_report.json
+2026-11-18 12:38:12,464 [INFO] evaluate_full_test_set: ======================================================================
+2026-11-18 12:38:12,465 [INFO] evaluate_full_test_set: PHASE 7 FINAL TEST EVALUATION COMPLETE
+2026-11-18 12:38:12,465 [INFO] evaluate_full_test_set: ======================================================================

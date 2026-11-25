@@ -1,0 +1,138 @@
+2026-11-18 08:50:39,074 [INFO] train_full_logbert: ======================================================================
+2026-11-18 08:50:39,074 [INFO] train_full_logbert: ROOTLENS: FULL-SCALE LOGBERT TRAINING PIPELINE (RESUMABLE OPTION A)
+2026-11-18 08:50:39,075 [INFO] train_full_logbert: ======================================================================
+2026-11-18 08:50:39,075 [INFO] train_full_logbert: Process ID: 7504 | Log file: data\benchmarks\hdfs_full\model\training.log
+2026-11-18 08:50:39,075 [INFO] train_full_logbert: Configuration:
+2026-11-18 08:50:39,075 [INFO] train_full_logbert:   Batch size: 64 | Max epochs: 3 | Patience: 1 | LR: 0.001 | Seed: 42
+2026-11-18 08:50:39,075 [INFO] train_full_logbert:   Save interval: every 1000 batches | Auto-resume: True
+2026-11-18 08:50:39,075 [INFO] train_full_logbert:   Architecture: hidden=128, layers=4, heads=4, max_seq_len=64, alpha=0.1
+2026-11-18 08:50:39,075 [INFO] train_full_logbert:   Hardware: 12 CPU cores, 8 PyTorch threads
+2026-11-18 08:50:39,076 [INFO] train_full_logbert: Loaded vocabulary: 22 tokens from data\benchmarks\hdfs_full\processed\vocab.json
+2026-11-18 08:50:39,076 [INFO] train_full_logbert: Loading full training partition...
+2026-11-18 08:50:45,235 [INFO] train_full_logbert: Loaded 446,578 training sessions in 5.76s (Memory: 1006.8 MB)
+2026-11-18 08:50:45,236 [INFO] train_full_logbert: Invariant Verified: 100%% of training sessions are normal (0 anomalies).
+2026-11-18 08:50:45,236 [INFO] train_full_logbert: Loading full validation partition...
+2026-11-18 08:50:46,350 [INFO] train_full_logbert: Loaded 64,241 validation sessions (55,822 normal, 8,419 anomaly) in 1.10s
+2026-11-18 08:50:46,350 [INFO] train_full_logbert: Train batches per epoch: 6,978 (batch size 64)
+2026-11-18 08:50:46,351 [INFO] train_full_logbert: Val batches per epoch:   502 (batch size 128)
+2026-11-18 08:50:46,437 [INFO] train_full_logbert: LogBERT instantiated: 823,958 parameters (~0.82M)
+2026-11-18 08:50:51,518 [INFO] train_full_logbert: Initializing hypersphere center c from normal training representations...
+2026-11-18 09:07:43,197 [INFO] train_full_logbert: Center initialized in 1011.41s and cached to data\benchmarks\hdfs_full\model\hypersphere_center.pt: norm = 11.2898, mean = -0.0013, eps bounded = True
+2026-11-18 09:07:43,212 [INFO] train_full_logbert: ----------------------------------------------------------------------
+2026-11-18 09:07:43,212 [INFO] train_full_logbert: CHECKPOINT SELECTION CRITERION:
+2026-11-18 09:07:43,212 [INFO] train_full_logbert:   Primary Criterion: Minimum Validation Loss (val_loss) on full validation set.
+2026-11-18 09:07:43,213 [INFO] train_full_logbert:   Secondary Monitoring: Sequence-level Validation F1-score and False Positive Rate (FPR).
+2026-11-18 09:07:43,213 [INFO] train_full_logbert:   Early Stopping: Patience = 1 epoch. Training stops if val_loss fails to improve.
+2026-11-18 09:07:43,233 [INFO] train_full_logbert:   Best checkpoint will be saved to: data\benchmarks\hdfs_full\model\logbert_best.pt
+2026-11-18 09:07:43,234 [INFO] train_full_logbert:   Resumable checkpoint will be updated every 1000 batches to: data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 09:07:43,234 [INFO] train_full_logbert: ----------------------------------------------------------------------
+2026-11-18 09:07:43,235 [INFO] train_full_logbert: 
+>>> STARTING EPOCH 1/3 <<<
+2026-11-18 09:14:09,963 [INFO] train_full_logbert: Epoch 1 [  500/ 6978 (7.2%)] | Loss: 0.3585 (MLKP: 0.2723, VHM: 0.8623) | Rate: 1.29 b/s | Elapsed: 6.4m | ETA: 83.4m | RAM: 794.1MB
+2026-11-18 09:16:51,039 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 1000/6978 (14.3%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 09:16:51,254 [INFO] train_full_logbert: Epoch 1 [ 1000/ 6978 (14.3%)] | Loss: 0.2485 (MLKP: 0.1990, VHM: 0.4955) | Rate: 1.83 b/s | Elapsed: 9.1m | ETA: 54.6m | RAM: 858.2MB
+2026-11-18 09:19:31,653 [INFO] train_full_logbert: Epoch 1 [ 1500/ 6978 (21.5%)] | Loss: 0.2035 (MLKP: 0.1681, VHM: 0.3539) | Rate: 2.12 b/s | Elapsed: 11.8m | ETA: 43.1m | RAM: 931.9MB
+2026-11-18 09:22:09,995 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 2000/6978 (28.7%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 09:22:10,222 [INFO] train_full_logbert: Epoch 1 [ 2000/ 6978 (28.7%)] | Loss: 0.1783 (MLKP: 0.1504, VHM: 0.2783) | Rate: 2.31 b/s | Elapsed: 14.4m | ETA: 36.0m | RAM: 971.9MB
+2026-11-18 09:24:48,668 [INFO] train_full_logbert: Epoch 1 [ 2500/ 6978 (35.8%)] | Loss: 0.1615 (MLKP: 0.1384, VHM: 0.2314) | Rate: 2.44 b/s | Elapsed: 17.1m | ETA: 30.6m | RAM: 965.0MB
+2026-11-18 09:27:26,504 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 3000/6978 (43.0%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 09:27:26,715 [INFO] train_full_logbert: Epoch 1 [ 3000/ 6978 (43.0%)] | Loss: 0.1500 (MLKP: 0.1300, VHM: 0.1996) | Rate: 2.54 b/s | Elapsed: 19.7m | ETA: 26.1m | RAM: 1026.1MB
+2026-11-18 09:30:05,886 [INFO] train_full_logbert: Epoch 1 [ 3500/ 6978 (50.2%)] | Loss: 0.1413 (MLKP: 0.1237, VHM: 0.1764) | Rate: 2.61 b/s | Elapsed: 22.4m | ETA: 22.2m | RAM: 995.2MB
+2026-11-18 09:32:46,136 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 4000/6978 (57.3%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 09:32:46,347 [INFO] train_full_logbert: Epoch 1 [ 4000/ 6978 (57.3%)] | Loss: 0.1348 (MLKP: 0.1189, VHM: 0.1587) | Rate: 2.66 b/s | Elapsed: 25.0m | ETA: 18.6m | RAM: 971.7MB
+2026-11-18 09:35:24,134 [INFO] train_full_logbert: Epoch 1 [ 4500/ 6978 (64.5%)] | Loss: 0.1298 (MLKP: 0.1153, VHM: 0.1450) | Rate: 2.71 b/s | Elapsed: 27.7m | ETA: 15.2m | RAM: 1014.9MB
+2026-11-18 09:38:02,594 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 5000/6978 (71.7%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 09:38:02,808 [INFO] train_full_logbert: Epoch 1 [ 5000/ 6978 (71.7%)] | Loss: 0.1250 (MLKP: 0.1117, VHM: 0.1337) | Rate: 2.75 b/s | Elapsed: 30.3m | ETA: 12.0m | RAM: 1036.7MB
+2026-11-18 09:40:39,878 [INFO] train_full_logbert: Epoch 1 [ 5500/ 6978 (78.8%)] | Loss: 0.1213 (MLKP: 0.1088, VHM: 0.1245) | Rate: 2.78 b/s | Elapsed: 32.9m | ETA: 8.9m | RAM: 995.1MB
+2026-11-18 09:43:23,060 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 6000/6978 (86.0%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 09:43:23,273 [INFO] train_full_logbert: Epoch 1 [ 6000/ 6978 (86.0%)] | Loss: 0.1179 (MLKP: 0.1062, VHM: 0.1167) | Rate: 2.80 b/s | Elapsed: 35.7m | ETA: 5.8m | RAM: 949.9MB
+2026-11-18 09:46:06,527 [INFO] train_full_logbert: Epoch 1 [ 6500/ 6978 (93.1%)] | Loss: 0.1151 (MLKP: 0.1041, VHM: 0.1101) | Rate: 2.82 b/s | Elapsed: 38.4m | ETA: 2.8m | RAM: 994.5MB
+2026-11-18 09:48:39,668 [INFO] train_full_logbert: Epoch 1 [ 6978/ 6978 (100.0%)] | Loss: 0.1126 (MLKP: 0.1022, VHM: 0.1048) | Rate: 2.84 b/s | Elapsed: 40.9m | ETA: 0.0m | RAM: 898.9MB
+2026-11-18 09:48:39,668 [INFO] train_full_logbert: Epoch 1 Training Complete in 2456.43s (40.94 min) | Throughput: 2.84 b/s (181.80 seq/s)
+2026-11-18 09:48:39,668 [INFO] train_full_logbert: Training Losses: Total=0.11264, MLKP=0.10216, VHM=0.10485
+2026-11-18 09:48:39,668 [INFO] train_full_logbert: Evaluating on FULL Validation Set (64,241 sessions)...
+2026-11-18 09:50:16,177 [INFO] train_full_logbert: Validation Complete in 93.46s (687.4 seq/s)
+2026-11-18 09:50:16,177 [INFO] train_full_logbert: Validation Results: Val Loss=0.06793 | Threshold=0.0010
+2026-11-18 09:50:16,177 [INFO] train_full_logbert: Metrics: F1=0.7558 | Precision=0.9606 | Recall=0.6230 | FPR=0.0039 | Accuracy=0.9472
+2026-11-18 09:50:16,177 [INFO] train_full_logbert: Confusion Matrix: TP=5245, FN=3174, TN=55607, FP=215
+2026-11-18 09:50:16,177 [INFO] train_full_logbert: Mean Scores: Normal=0.0007, Anomaly=0.0822
+2026-11-18 09:50:16,400 [INFO] train_full_logbert: VAL LOSS IMPROVED from inf to 0.06793 (delta: -inf). Updating best checkpoint!
+2026-11-18 09:50:16,433 [INFO] train_full_logbert: Saved atomic best checkpoint: data\benchmarks\hdfs_full\model\logbert_best.pt (9.98 MB)
+2026-11-18 09:50:16,556 [INFO] train_full_logbert: 
+>>> STARTING EPOCH 2/3 <<<
+2026-11-18 09:53:11,070 [INFO] train_full_logbert: Epoch 2 [  500/ 6978 (7.2%)] | Loss: 0.0766 (MLKP: 0.0741, VHM: 0.0259) | Rate: 2.87 b/s | Elapsed: 2.9m | ETA: 37.6m | RAM: 1116.4MB
+2026-11-18 09:56:04,339 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 1000/6978 (14.3%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 09:56:04,547 [INFO] train_full_logbert: Epoch 2 [ 1000/ 6978 (14.3%)] | Loss: 0.0762 (MLKP: 0.0735, VHM: 0.0271) | Rate: 2.88 b/s | Elapsed: 5.8m | ETA: 34.6m | RAM: 1116.1MB
+2026-11-18 09:58:54,950 [INFO] train_full_logbert: Epoch 2 [ 1500/ 6978 (21.5%)] | Loss: 0.0759 (MLKP: 0.0731, VHM: 0.0278) | Rate: 2.89 b/s | Elapsed: 8.6m | ETA: 31.5m | RAM: 1067.2MB
+2026-11-18 10:01:48,469 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 2000/6978 (28.7%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 10:01:48,691 [INFO] train_full_logbert: Epoch 2 [ 2000/ 6978 (28.7%)] | Loss: 0.0758 (MLKP: 0.0731, VHM: 0.0276) | Rate: 2.89 b/s | Elapsed: 11.5m | ETA: 28.7m | RAM: 1115.1MB
+2026-11-18 10:04:38,139 [INFO] train_full_logbert: Epoch 2 [ 2500/ 6978 (35.8%)] | Loss: 0.0751 (MLKP: 0.0724, VHM: 0.0272) | Rate: 2.90 b/s | Elapsed: 14.4m | ETA: 25.7m | RAM: 1108.1MB
+2026-11-18 10:07:32,278 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 3000/6978 (43.0%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 10:07:32,492 [INFO] train_full_logbert: Epoch 2 [ 3000/ 6978 (43.0%)] | Loss: 0.0750 (MLKP: 0.0723, VHM: 0.0267) | Rate: 2.90 b/s | Elapsed: 17.3m | ETA: 22.9m | RAM: 1133.9MB
+2026-11-18 10:10:23,506 [INFO] train_full_logbert: Epoch 2 [ 3500/ 6978 (50.2%)] | Loss: 0.0747 (MLKP: 0.0721, VHM: 0.0262) | Rate: 2.90 b/s | Elapsed: 20.1m | ETA: 20.0m | RAM: 1114.5MB
+2026-11-18 10:13:20,063 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 4000/6978 (57.3%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 10:13:20,289 [INFO] train_full_logbert: Epoch 2 [ 4000/ 6978 (57.3%)] | Loss: 0.0740 (MLKP: 0.0713, VHM: 0.0261) | Rate: 2.89 b/s | Elapsed: 23.1m | ETA: 17.2m | RAM: 1020.1MB
+2026-11-18 10:16:17,445 [INFO] train_full_logbert: Epoch 2 [ 4500/ 6978 (64.5%)] | Loss: 0.0741 (MLKP: 0.0714, VHM: 0.0265) | Rate: 2.88 b/s | Elapsed: 26.0m | ETA: 14.3m | RAM: 1017.1MB
+2026-11-18 10:19:16,488 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 5000/6978 (71.7%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 10:19:16,699 [INFO] train_full_logbert: Epoch 2 [ 5000/ 6978 (71.7%)] | Loss: 0.0736 (MLKP: 0.0710, VHM: 0.0262) | Rate: 2.87 b/s | Elapsed: 29.0m | ETA: 11.5m | RAM: 1016.9MB
+2026-11-18 10:22:12,637 [INFO] train_full_logbert: Epoch 2 [ 5500/ 6978 (78.8%)] | Loss: 0.0730 (MLKP: 0.0704, VHM: 0.0255) | Rate: 2.87 b/s | Elapsed: 31.9m | ETA: 8.6m | RAM: 1019.0MB
+2026-11-18 10:25:10,839 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 6000/6978 (86.0%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 10:25:11,042 [INFO] train_full_logbert: Epoch 2 [ 6000/ 6978 (86.0%)] | Loss: 0.0728 (MLKP: 0.0703, VHM: 0.0252) | Rate: 2.86 b/s | Elapsed: 34.9m | ETA: 5.7m | RAM: 991.5MB
+2026-11-18 10:28:06,971 [INFO] train_full_logbert: Epoch 2 [ 6500/ 6978 (93.1%)] | Loss: 0.0725 (MLKP: 0.0700, VHM: 0.0250) | Rate: 2.86 b/s | Elapsed: 37.8m | ETA: 2.8m | RAM: 1012.3MB
+2026-11-18 10:30:57,403 [INFO] train_full_logbert: Epoch 2 [ 6978/ 6978 (100.0%)] | Loss: 0.0722 (MLKP: 0.0697, VHM: 0.0246) | Rate: 2.86 b/s | Elapsed: 40.7m | ETA: 0.0m | RAM: 991.9MB
+2026-11-18 10:30:57,404 [INFO] train_full_logbert: Epoch 2 Training Complete in 2440.85s (40.68 min) | Throughput: 2.86 b/s (182.96 seq/s)
+2026-11-18 10:30:57,404 [INFO] train_full_logbert: Training Losses: Total=0.07217, MLKP=0.06970, VHM=0.02463
+2026-11-18 10:30:57,404 [INFO] train_full_logbert: Evaluating on FULL Validation Set (64,241 sessions)...
+2026-11-18 10:32:35,903 [INFO] train_full_logbert: Validation Complete in 95.45s (673.0 seq/s)
+2026-11-18 10:32:35,903 [INFO] train_full_logbert: Validation Results: Val Loss=0.06366 | Threshold=0.0256
+2026-11-18 10:32:35,904 [INFO] train_full_logbert: Metrics: F1=0.6822 | Precision=0.9923 | Recall=0.5198 | FPR=0.0006 | Accuracy=0.9365
+2026-11-18 10:32:35,904 [INFO] train_full_logbert: Confusion Matrix: TP=4376, FN=4043, TN=55788, FP=34
+2026-11-18 10:32:35,904 [INFO] train_full_logbert: Mean Scores: Normal=0.0006, Anomaly=0.0843
+2026-11-18 10:32:36,108 [INFO] train_full_logbert: VAL LOSS IMPROVED from 0.06793 to 0.06366 (delta: -0.00427). Updating best checkpoint!
+2026-11-18 10:32:36,132 [INFO] train_full_logbert: Saved atomic best checkpoint: data\benchmarks\hdfs_full\model\logbert_best.pt (9.98 MB)
+2026-11-18 10:32:36,236 [INFO] train_full_logbert: 
+>>> STARTING EPOCH 3/3 <<<
+2026-11-18 10:35:34,441 [INFO] train_full_logbert: Epoch 3 [  500/ 6978 (7.2%)] | Loss: 0.0694 (MLKP: 0.0671, VHM: 0.0230) | Rate: 2.81 b/s | Elapsed: 3.0m | ETA: 38.4m | RAM: 1125.9MB
+2026-11-18 10:38:30,657 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 1000/6978 (14.3%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 10:38:30,867 [INFO] train_full_logbert: Epoch 3 [ 1000/ 6978 (14.3%)] | Loss: 0.0684 (MLKP: 0.0663, VHM: 0.0218) | Rate: 2.82 b/s | Elapsed: 5.9m | ETA: 35.3m | RAM: 1072.6MB
+2026-11-18 10:41:26,438 [INFO] train_full_logbert: Epoch 3 [ 1500/ 6978 (21.5%)] | Loss: 0.0671 (MLKP: 0.0651, VHM: 0.0205) | Rate: 2.83 b/s | Elapsed: 8.8m | ETA: 32.3m | RAM: 1057.1MB
+2026-11-18 10:44:23,174 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 2000/6978 (28.7%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 10:44:23,388 [INFO] train_full_logbert: Epoch 3 [ 2000/ 6978 (28.7%)] | Loss: 0.0671 (MLKP: 0.0651, VHM: 0.0200) | Rate: 2.83 b/s | Elapsed: 11.8m | ETA: 29.3m | RAM: 980.4MB
+2026-11-18 10:47:18,966 [INFO] train_full_logbert: Epoch 3 [ 2500/ 6978 (35.8%)] | Loss: 0.0665 (MLKP: 0.0645, VHM: 0.0199) | Rate: 2.83 b/s | Elapsed: 14.7m | ETA: 26.3m | RAM: 1041.3MB
+2026-11-18 10:50:14,735 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 3000/6978 (43.0%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 10:50:14,950 [INFO] train_full_logbert: Epoch 3 [ 3000/ 6978 (43.0%)] | Loss: 0.0662 (MLKP: 0.0643, VHM: 0.0192) | Rate: 2.83 b/s | Elapsed: 17.6m | ETA: 23.4m | RAM: 1041.2MB
+2026-11-18 10:53:09,116 [INFO] train_full_logbert: Epoch 3 [ 3500/ 6978 (50.2%)] | Loss: 0.0665 (MLKP: 0.0646, VHM: 0.0188) | Rate: 2.84 b/s | Elapsed: 20.5m | ETA: 20.4m | RAM: 1041.2MB
+2026-11-18 10:56:05,312 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 4000/6978 (57.3%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 10:56:05,527 [INFO] train_full_logbert: Epoch 3 [ 4000/ 6978 (57.3%)] | Loss: 0.0664 (MLKP: 0.0645, VHM: 0.0186) | Rate: 2.84 b/s | Elapsed: 23.5m | ETA: 17.5m | RAM: 1091.4MB
+2026-11-18 10:59:00,260 [INFO] train_full_logbert: Epoch 3 [ 4500/ 6978 (64.5%)] | Loss: 0.0664 (MLKP: 0.0646, VHM: 0.0183) | Rate: 2.84 b/s | Elapsed: 26.4m | ETA: 14.5m | RAM: 1067.2MB
+2026-11-18 11:01:57,116 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 5000/6978 (71.7%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 11:01:57,327 [INFO] train_full_logbert: Epoch 3 [ 5000/ 6978 (71.7%)] | Loss: 0.0665 (MLKP: 0.0647, VHM: 0.0183) | Rate: 2.84 b/s | Elapsed: 29.3m | ETA: 11.6m | RAM: 1094.9MB
+2026-11-18 11:04:52,338 [INFO] train_full_logbert: Epoch 3 [ 5500/ 6978 (78.8%)] | Loss: 0.0661 (MLKP: 0.0644, VHM: 0.0178) | Rate: 2.84 b/s | Elapsed: 32.3m | ETA: 8.7m | RAM: 1065.5MB
+2026-11-18 11:07:49,730 [INFO] train_full_logbert: Saved atomic resumable checkpoint at step 6000/6978 (86.0%) to data\benchmarks\hdfs_full\model\checkpoint_resumable.pt
+2026-11-18 11:07:49,949 [INFO] train_full_logbert: Epoch 3 [ 6000/ 6978 (86.0%)] | Loss: 0.0656 (MLKP: 0.0639, VHM: 0.0176) | Rate: 2.84 b/s | Elapsed: 35.2m | ETA: 5.7m | RAM: 1038.8MB
+2026-11-18 11:11:59,185 [INFO] train_full_logbert: Epoch 3 [ 6500/ 6978 (93.1%)] | Loss: 0.0654 (MLKP: 0.0637, VHM: 0.0175) | Rate: 2.75 b/s | Elapsed: 39.4m | ETA: 2.9m | RAM: 888.9MB
+2026-11-18 11:15:41,976 [INFO] train_full_logbert: Epoch 3 [ 6978/ 6978 (100.0%)] | Loss: 0.0655 (MLKP: 0.0637, VHM: 0.0174) | Rate: 2.70 b/s | Elapsed: 43.1m | ETA: 0.0m | RAM: 1022.9MB
+2026-11-18 11:15:41,977 [INFO] train_full_logbert: Epoch 3 Training Complete in 2585.74s (43.10 min) | Throughput: 2.70 b/s (172.71 seq/s)
+2026-11-18 11:15:41,977 [INFO] train_full_logbert: Training Losses: Total=0.06548, MLKP=0.06374, VHM=0.01744
+2026-11-18 11:15:41,977 [INFO] train_full_logbert: Evaluating on FULL Validation Set (64,241 sessions)...
+2026-11-18 11:18:50,580 [INFO] train_full_logbert: Validation Complete in 182.20s (352.6 seq/s)
+2026-11-18 11:18:50,580 [INFO] train_full_logbert: Validation Results: Val Loss=0.05340 | Threshold=0.0004
+2026-11-18 11:18:50,580 [INFO] train_full_logbert: Metrics: F1=0.6819 | Precision=0.9748 | Recall=0.5243 | FPR=0.0020 | Accuracy=0.9359
+2026-11-18 11:18:50,580 [INFO] train_full_logbert: Confusion Matrix: TP=4414, FN=4005, TN=55708, FP=114
+2026-11-18 11:18:50,580 [INFO] train_full_logbert: Mean Scores: Normal=0.0003, Anomaly=0.0814
+2026-11-18 11:18:50,805 [INFO] train_full_logbert: VAL LOSS IMPROVED from 0.06366 to 0.05340 (delta: -0.01026). Updating best checkpoint!
+2026-11-18 11:18:50,871 [INFO] train_full_logbert: Saved atomic best checkpoint: data\benchmarks\hdfs_full\model\logbert_best.pt (9.98 MB)
+2026-11-18 11:18:51,281 [INFO] train_full_logbert: 
+======================================================================
+2026-11-18 11:18:51,281 [INFO] train_full_logbert: TRAINING COMPLETED in 7868.05s (2.19 hours)
+2026-11-18 11:18:51,282 [INFO] train_full_logbert: Best Epoch: 3 with Val Loss: 0.05340 | Val F1: 0.6819 | Val Threshold: 0.0004
+2026-11-18 11:18:51,282 [INFO] train_full_logbert: ======================================================================
+2026-11-18 11:18:51,302 [INFO] train_full_logbert: Saved training metadata: data\benchmarks\hdfs_full\model\training_metadata.json
+2026-11-18 11:18:51,303 [INFO] train_full_logbert: Verifying checkpoint reload through production LogBERTInferenceEngine...
+2026-11-18 11:18:51,478 [INFO] train_full_logbert: Inference engine loaded successfully with threshold: 0.0004
+2026-11-18 11:18:51,508 [INFO] train_full_logbert: Sanity Eval Normal [blk_671492602951249756]: is_anomaly=False, score=0.0003 (mismatches=0/20)
+2026-11-18 11:18:51,508 [INFO] train_full_logbert: Sanity Eval Anomaly [blk_8057274412426720425]: is_anomaly=True, score=0.0579 (mismatches=2/35)
+2026-11-18 11:18:51,510 [INFO] train_full_logbert: Saved full training report to: data\benchmarks\hdfs_full\evaluation\full_training_report.json
+2026-11-18 11:18:51,510 [INFO] train_full_logbert: ======================================================================
+2026-11-18 11:18:51,510 [INFO] train_full_logbert: FULL-SCALE LOGBERT TRAINING PIPELINE COMPLETE
+2026-11-18 11:18:51,511 [INFO] train_full_logbert: ======================================================================

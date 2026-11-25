@@ -1,0 +1,107 @@
+{
+  "benchmark_name": "RootLens_LogBERT_HDFS_Full_v1_Final_Test_Evaluation",
+  "timestamp_utc": "2026-11-18T07:08:12Z",
+  "checkpoint": {
+    "path": "data\\benchmarks\\hdfs_full\\model\\logbert_best.pt",
+    "size_bytes": 9976173,
+    "trained_epoch": 3,
+    "best_val_loss": 0.0534
+  },
+  "model_architecture": {
+    "model_type": "LogBERT",
+    "hidden_size": 128,
+    "num_hidden_layers": 4,
+    "num_attention_heads": 4,
+    "intermediate_size": 512,
+    "max_seq_len": 64,
+    "vocab_size": 22,
+    "total_parameters": 823958,
+    "vhm_alpha": 0.1,
+    "center_norm": 11.2898
+  },
+  "dataset_summary": {
+    "dataset": "HDFS_Full_v1",
+    "test_file": "data\\benchmarks\\hdfs_full\\processed\\test_sessions.json",
+    "total_test_sessions": 64242,
+    "normal_sessions": 55823,
+    "anomaly_sessions": 8419,
+    "anomaly_percentage": 13.11
+  },
+  "evaluation_protocol": {
+    "decision_threshold": 0.0004,
+    "threshold_source": "Strictly calibrated on validation partition (Epoch 3 min val loss); 0 tuning on test",
+    "device": "cpu",
+    "batch_size": 128,
+    "top_candidates_k": 6
+  },
+  "classification_metrics": {
+    "f1_score": 0.6802,
+    "precision": 0.9745,
+    "recall": 0.5224,
+    "accuracy": 0.9356,
+    "false_positive_rate": 0.0021,
+    "specificity": 0.9979,
+    "confusion_matrix": {
+      "tp": 4398,
+      "fp": 115,
+      "tn": 55708,
+      "fn": 4021
+    }
+  },
+  "score_distribution": {
+    "normal_sessions": {
+      "mean": 0.0003,
+      "median": 0.0003,
+      "min": 0.0003,
+      "max": 0.236
+    },
+    "anomaly_sessions": {
+      "mean": 0.0794,
+      "median": 0.0253,
+      "min": 0.0003,
+      "max": 0.6202
+    }
+  },
+  "latency_benchmark": {
+    "hardware": {
+      "device": "cpu",
+      "cpu_cores": 12,
+      "pytorch_threads": 8
+    },
+    "single_sequence_latency_ms": {
+      "sample_count": 1000,
+      "mean": 11.001,
+      "median_p50": 10.896,
+      "p90": 13.163,
+      "p95": 15.026,
+      "p99": 34.193,
+      "min": 2.438,
+      "max": 103.89,
+      "throughput_seq_per_sec": 90.9
+    },
+    "batched_inference": {
+      "batch_size": 128,
+      "total_sequences": 64242,
+      "wall_time_seconds": 159.56,
+      "throughput_seq_per_sec": 402.6
+    }
+  },
+  "production_verification_samples": {
+    "normal_sample": {
+      "session_id": "blk_410678498721295872",
+      "ground_truth": 0,
+      "predicted_anomaly": false,
+      "composite_score": 0.0003,
+      "vhm_distance": 0.0027,
+      "mismatch_count": 0
+    },
+    "anomaly_sample": {
+      "session_id": "blk_6492489344990292445",
+      "ground_truth": 1,
+      "predicted_anomaly": true,
+      "composite_score": 0.1288,
+      "vhm_distance": 0.0056,
+      "mismatch_count": 5
+    }
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "benchmark_timestamp_utc": "2026-11-17T21:06:35Z",
+  "hardware": {
+    "device": "cpu",
+    "cpu_cores": 12,
+    "pytorch_threads": 8
+  },
+  "model_architecture": {
+    "vocab_size": 22,
+    "hidden_size": 128,
+    "num_hidden_layers": 4,
+    "num_attention_heads": 4,
+    "intermediate_size": 512,
+    "max_seq_len": 64,
+    "total_parameters": 823958
+  },
+  "benchmark_configuration": {
+    "sample_train_sessions": 4855,
+    "sample_val_sessions": 2000,
+    "batch_size": 64,
+    "benchmark_epochs": 3,
+    "learning_rate": 0.001,
+    "seed": 42
+  },
+  "epoch_records": [
+    {
+      "epoch": 1,
+      "train_wall_duration_seconds": 34.05,
+      "batches_per_second": 2.23,
+      "sequences_per_second": 142.6,
+      "mean_batch_latency_ms": 440.54,
+      "cpu_utilization_pct": 753.7,
+      "memory_working_set_mb": 532.4,
+      "peak_working_set_mb": 576.9,
+      "losses": {
+        "total_loss": 1.04902,
+        "mlkp_loss": 0.76371,
+        "vhm_loss": 2.85306
+      },
+      "validation": {
+        "val_duration_seconds": 3.46,
+        "val_batches_per_second": 9.25,
+        "val_loss": 0.34779,
+        "val_threshold": 0.0459,
+        "val_f1": 0.9501,
+        "val_precision": 0.905,
+        "val_recall": 1.0
+      }
+    },
+    {
+      "epoch": 2,
+      "train_wall_duration_seconds": 32.66,
+      "batches_per_second": 2.33,
+      "sequences_per_second": 148.65,
+      "mean_batch_latency_ms": 423.94,
+      "cpu_utilization_pct": 760.9,
+      "memory_working_set_mb": 522.0,
+      "peak_working_set_mb": 582.0,
+      "losses": {
+        "total_loss": 0.37525,
+        "mlkp_loss": 0.26643,
+        "vhm_loss": 1.08818
+      },
+      "validation": {
+        "val_duration_seconds": 3.54,
+        "val_batches_per_second": 9.05,
+        "val_loss": 0.2081,
+        "val_threshold": 0.0416,
+        "val_f1": 0.9732,
+        "val_precision": 0.9479,
+        "val_recall": 1.0
+      }
+    },
+    {
+      "epoch": 3,
+      "train_wall_duration_seconds": 34.73,
+      "batches_per_second": 2.19,
+      "sequences_per_second": 139.81,
+      "mean_batch_latency_ms": 450.7,
+      "cpu_utilization_pct": 760.0,
+      "memory_working_set_mb": 524.6,
+      "peak_working_set_mb": 582.0,
+      "losses": {
+        "total_loss": 0.25483,
+        "mlkp_loss": 0.19006,
+        "vhm_loss": 0.64775
+      },
+      "validation": {
+        "val_duration_seconds": 3.5,
+        "val_batches_per_second": 9.15,
+        "val_loss": 0.16198,
+        "val_threshold": 0.0381,
+        "val_f1": 0.9592,
+        "val_precision": 0.9217,
+        "val_recall": 1.0
+      }
+    }
+  ],
+  "full_dataset_runtime_projections": {
+    "full_dataset_normal_sessions": 446578,
+    "batch_size": 64,
+    "total_batches_per_epoch": 6978,
+    "measured_training_throughput_batches_per_sec": 2.25,
+    "measured_training_throughput_seqs_per_sec": 143.86,
+    "estimated_train_time_per_epoch": {
+      "seconds": 3104.4,
+      "minutes": 51.7,
+      "hours": 0.86
+    },
+    "estimated_val_eval_time_full_val_split": {
+      "val_sessions_count": 64241,
+      "seconds": 109.7,
+      "minutes": 1.8
+    },
+    "projected_full_training_runs": {
+      "1_epoch": "0.86 hours (51.7 minutes)",
+      "3_epochs": "2.59 hours (155.2 minutes)",
+      "5_epochs": "4.31 hours (258.7 minutes)",
+      "10_epochs": "8.62 hours (517.4 minutes)"
+    }
+  },
+  "checkpoint": {
+    "path": "data\\benchmarks\\hdfs_full\\model_benchmark\\logbert_benchmark.pt",
+    "size_bytes": 9979523
+  }
+}
